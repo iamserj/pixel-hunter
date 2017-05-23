@@ -1,7 +1,7 @@
 # Личный проект «Пиксель хантер» [![Build status][travis-image]][travis-url]
 
 * Студент: [Сергей Белоцерковский](https://up.htmlacademy.ru/ecmascript/2/user/114094).
-* Наставник: `Неизвестно`.
+* Наставник: [Виталий Яковенко](https://up.htmlacademy.ru/ecmascript/2/user/376639).
 
 ---
 
