@@ -29,16 +29,22 @@
     }
   };
 
-  const keyboardListener = (event) => {
+  const keyboardHandler = (event) => {
     const code = event.keyCode;
-    if (code === Keys.LEFT && event.altKey && currentScreen >= 1) {
-      currentScreen--;
-      showScreen();
-    } else if (code === Keys.RIGHT && event.altKey && currentScreen < screens.length - 1) {
-      currentScreen++;
-      showScreen();
+    if (code === Keys.LEFT && event.altKey) {
+      event.preventDefault();
+      if (currentScreen >= 1) {
+        currentScreen--;
+        showScreen();
+      }
+    } else if (code === Keys.RIGHT && event.altKey) {
+      event.preventDefault();
+      if (currentScreen < screens.length - 1) {
+        currentScreen++;
+        showScreen();
+      }
     }
   };
-  document.addEventListener(`keydown`, keyboardListener, false);
+  document.addEventListener(`keydown`, keyboardHandler, false);
 
 })();
