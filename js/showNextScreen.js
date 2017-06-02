@@ -5,7 +5,7 @@
 const mainScreen = document.querySelector(`main.central`);
 
 const showScreen = (screen) => {
-  mainScreen.innerHTML = "";
+  mainScreen.innerHTML = ``;
   mainScreen.appendChild(screen);
 };
 

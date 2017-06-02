@@ -1,7 +1,10 @@
 /**
  * Created by soniko on 30.05.2017.
  */
+
+import greetingScreen from './screenGreeting';
 import createElement from './createDOMElement';
+import showNextScreen from './showNextScreen';
 
 const introMarkup = `\
 <div id="main" class="central__content">
@@ -22,13 +25,14 @@ const introMarkup = `\
 </footer>`;
 
 
-export const introScreen = createElement(introMarkup);
+const introScreen = createElement(introMarkup);
 
-export const enableListeners = () => {
-  const asterisk = document.querySelector(`.intro__asterisk`);
-  asterisk.addEventListener("click", asterisk_handler);
-};
+const asterisk = introScreen.querySelector(`.intro__asterisk`);
+asterisk.addEventListener(`click`, asteriskHandler);
 
-function asterisk_handler(event) {
-  console.log("asterisk_handler");
+function asteriskHandler(event) {
+  asterisk.removeEventListener(`click`, asteriskHandler);
+  showNextScreen(greetingScreen);
 }
+
+export default introScreen;
