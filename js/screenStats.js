@@ -130,6 +130,7 @@ const statsScreen = createElement(statsMarkup);
 const backButton = statsScreen.querySelector(`.header__back`);
 
 const backButtonHandler = (event) => {
+  event.preventDefault();
   showNextScreen(greetingScreen);
 };
 backButton.addEventListener(`click`, backButtonHandler);

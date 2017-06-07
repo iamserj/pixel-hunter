@@ -84,6 +84,7 @@ let answer2;
 
 Array.from(question1).forEach((answer) => {
   answer.addEventListener(`click`, function (event) {
+    event.preventDefault();
     answer1 = answer.value;
     checkAnotherAnswer();
   });
@@ -91,6 +92,7 @@ Array.from(question1).forEach((answer) => {
 
 Array.from(question2).forEach((answer) => {
   answer.addEventListener(`click`, function (event) {
+    event.preventDefault();
     answer2 = answer.value;
     checkAnotherAnswer();
   });
@@ -104,6 +106,7 @@ const checkAnotherAnswer = () => {
 };
 
 const backButtonHandler = (event) => {
+  event.preventDefault();
   showNextScreen(greetingScreen);
 };
 backButton.addEventListener(`click`, backButtonHandler);

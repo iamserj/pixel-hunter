@@ -32,12 +32,12 @@ const greetingMarkup = `\
 </footer>`;
 
 const greetingScreen = createElement(greetingMarkup);
-
 const leftButton = greetingScreen.querySelector(`.greeting__continue`);
-leftButton.addEventListener(`click`, leftButtonHandler);
 
-function leftButtonHandler(event) {
+const leftButtonHandler = (event) => {
+  event.preventDefault();
   showNextScreen(rulesScreen);
-}
+};
+leftButton.addEventListener(`click`, leftButtonHandler);
 
 export default greetingScreen;

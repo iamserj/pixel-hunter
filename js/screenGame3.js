@@ -67,12 +67,14 @@ const backButton = game3Screen.querySelector(`.header__back`);
 
 Array.from(question1).forEach((answer) => {
   answer.addEventListener(`click`, function (event) {
+    event.preventDefault();
     // TODO save answer here
     showNextScreen(statsScreen);
   });
 });
 
 const backButtonHandler = (event) => {
+  event.preventDefault();
   showNextScreen(greetingScreen);
 };
 backButton.addEventListener(`click`, backButtonHandler);

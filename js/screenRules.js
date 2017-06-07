@@ -48,37 +48,23 @@ const nameInput = rulesScreen.querySelector(`.rules__input`);
 const submitNameButton = rulesScreen.querySelector(`.rules__button`);
 const backButton = rulesScreen.querySelector(`.header__back`);
 
-const maxChars = 22;
-const regexpRule = new RegExp(`[A-Za-z0-9_.-]+`);
-
-const nameInputKeyHandler = (event) => {
-  const keyValue = String.fromCharCode(event.which);
-  if (!regexpRule.test(keyValue)) {
-    event.preventDefault();
-  }
-  if (nameInput.value.length > maxChars) {
-    nameInput.value = nameInput.value.substr(0, maxChars);
-  }
-};
+nameInput.maxLength = 22;
+nameInput.required = true;
+nameInput.pattern = `[A-Za-z0-9_.-]+`;
 
 const nameInputInputHandler = (event) => {
-  if (nameInput.value) {
-    submitNameButton.disabled = false;
-  } else {
-    submitNameButton.disabled = true;
-  }
+  submitNameButton.disabled = nameInput.value ? false : true;
 };
+nameInput.addEventListener(`input`, nameInputInputHandler);
 
 const submitNameButtonHandler = (event) => {
   event.preventDefault();
   showNextScreen(game1Screen);
 };
-
-nameInput.addEventListener(`keypress`, nameInputKeyHandler);
-nameInput.addEventListener(`input`, nameInputInputHandler);
 submitNameButton.addEventListener(`click`, submitNameButtonHandler);
 
 const backButtonHandler = (event) => {
+  event.preventDefault();
   showNextScreen(greetingScreen);
 };
 backButton.addEventListener(`click`, backButtonHandler);

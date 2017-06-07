@@ -31,6 +31,7 @@ const asterisk = introScreen.querySelector(`.intro__asterisk`);
 asterisk.addEventListener(`click`, asteriskHandler);
 
 function asteriskHandler(event) {
+  event.preventDefault();
   asterisk.removeEventListener(`click`, asteriskHandler);
   showNextScreen(greetingScreen);
 }
