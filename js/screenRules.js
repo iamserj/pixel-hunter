@@ -28,7 +28,7 @@ const rulesMarkup = `\
     Готовы?
   </p>
   <form class="rules__form">
-    <input class="rules__input" type="text" placeholder="Ваше Имя" pattern="[A-Za-z]">
+    <input class="rules__input" type="text" placeholder="Ваше Имя" pattern="[A-Za-z]" maxlength="22" required>
     <button class="rules__button  continue" type="submit" disabled>Go!</button>
   </form>
 </div>
@@ -47,9 +47,6 @@ const rulesScreen = createElement(rulesMarkup);
 const nameInput = rulesScreen.querySelector(`.rules__input`);
 const submitNameButton = rulesScreen.querySelector(`.rules__button`);
 const backButton = rulesScreen.querySelector(`.header__back`);
-
-nameInput.maxLength = 22;
-nameInput.required = true;
 
 const nameInputInputHandler = (event) => {
   submitNameButton.disabled = nameInput.value ? false : true;
