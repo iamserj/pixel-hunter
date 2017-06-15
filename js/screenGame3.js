@@ -2,26 +2,11 @@
  * Created by soniko on 30.05.2017.
  */
 
-import statsScreen from './screenStats';
-import greetingScreen from './screenGreeting';
 import createElement from './createDOMElement';
-import showNextScreen from './showNextScreen';
+import {showNextGame} from './game';
+import {answers, AnswerType} from './model';
 
 const game3Markup = `\
-<header class="header">
-  <div class="header__back">
-    <span class="back">
-      <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-      <img src="img/logo_small.png" width="101" height="44">
-    </span>
-  </div>
-  <h1 class="game__timer">NN</h1>
-  <div class="game__lives">
-    <img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">
-    <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-    <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-  </div>
-</header>
 <div class="game">
   <p class="game__task">Найдите рисунок среди изображений</p>
   <form class="game__content  game__content--triple">
@@ -35,38 +20,17 @@ const game3Markup = `\
       <img src="http://placehold.it/304x455" alt="Option 1" width="304" height="455">
     </div>
   </form>
-  <div class="stats">
-    <ul class="stats">
-      <li class="stats__result stats__result--wrong"></li>
-      <li class="stats__result stats__result--slow"></li>
-      <li class="stats__result stats__result--fast"></li>
-      <li class="stats__result stats__result--correct"></li>
-      <li class="stats__result stats__result--wrong"></li>
-      <li class="stats__result stats__result--unknown"></li>
-      <li class="stats__result stats__result--slow"></li>
-      <li class="stats__result stats__result--unknown"></li>
-      <li class="stats__result stats__result--fast"></li>
-      <li class="stats__result stats__result--unknown"></li>
-    </ul>
-  </div>
 </div>`;
 
 const game3Screen = createElement(game3Markup);
 const question1 = game3Screen.querySelectorAll(`.game__option`);
-const backButton = game3Screen.querySelector(`.header__back`);
 
 Array.from(question1).forEach((answer) => {
   answer.addEventListener(`click`, function (event) {
-    event.preventDefault();
     // TODO save answer here
-    showNextScreen(statsScreen);
+    answers.data = AnswerType.CORRECT;
+    showNextGame();
   });
 });
-
-const backButtonHandler = (event) => {
-  event.preventDefault();
-  showNextScreen(greetingScreen);
-};
-backButton.addEventListener(`click`, backButtonHandler);
 
 export default game3Screen;

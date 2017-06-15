@@ -2,7 +2,8 @@
  * Created by soniko on 30.05.2017.
  */
 
-import game1Screen from './screenGame1';
+import {userData} from './model';
+import {showNextGame, resetGame} from './game';
 import greetingScreen from './screenGreeting';
 import createElement from './createDOMElement';
 import showNextScreen from './showNextScreen';
@@ -28,7 +29,7 @@ const rulesMarkup = `\
     Готовы?
   </p>
   <form class="rules__form">
-    <input class="rules__input" type="text" placeholder="Ваше Имя" pattern="[A-Za-z]" maxlength="22" required>
+    <input class="rules__input" type="text" placeholder="Ваше Имя" required>
     <button class="rules__button  continue" type="submit" disabled>Go!</button>
   </form>
 </div>`;
@@ -38,14 +39,32 @@ const nameInput = rulesScreen.querySelector(`.rules__input`);
 const submitNameButton = rulesScreen.querySelector(`.rules__button`);
 const backButton = rulesScreen.querySelector(`.header__back`);
 
-const nameInputInputHandler = (event) => {
-  submitNameButton.disabled = nameInput.value ? false : true;
+const NAME_MIN_LENGTH = 2;
+const NAME_MAX_LENGTH = 22;
+const NAME_REGEXP = new RegExp(`[A-Za-zА-Яа-яЁё0-9_.-]+`);
+
+const nameInputKeyHandler = (event) => {
+  const keyValue = String.fromCharCode(event.which);
+  if (!NAME_REGEXP.test(keyValue)) {
+    event.preventDefault();
+  }
 };
+const nameInputInputHandler = (event) => {
+  const name = nameInput.value.length;
+  if (name >= NAME_MIN_LENGTH && name < NAME_MAX_LENGTH) {
+    submitNameButton.disabled = false;
+  } else {
+    submitNameButton.disabled = true;
+  }
+};
+nameInput.addEventListener(`keypress`, nameInputKeyHandler);
 nameInput.addEventListener(`input`, nameInputInputHandler);
 
 const submitNameButtonHandler = (event) => {
   event.preventDefault();
-  showNextScreen(game1Screen);
+  userData.name = nameInput.value;
+  resetGame();
+  showNextGame();
 };
 submitNameButton.addEventListener(`click`, submitNameButtonHandler);
 

@@ -6,6 +6,14 @@ import footerBlock from './moduleFooter';
 
 const mainScreen = document.querySelector(`main.central`);
 
+export const appendScreenElements = (...elements) => {
+  mainScreen.innerHTML = ``;
+  elements.forEach((item) => {
+    mainScreen.appendChild(item);
+  });
+  mainScreen.appendChild(footerBlock);
+};
+
 const showNextScreen = (screen) => {
   mainScreen.innerHTML = ``;
   mainScreen.appendChild(screen);
