@@ -65,6 +65,7 @@ const submitNameButtonHandler = (event) => {
   userData.name = nameInput.value;
   resetGame();
   showNextGame();
+  nameInput.value = ``;
 };
 submitNameButton.addEventListener(`click`, submitNameButtonHandler);
 

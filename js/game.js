@@ -8,7 +8,7 @@ import game3Screen from './screenGame3';
 import statsScreen from './screenStats';
 import {headerWithState, startTimer} from './gameHeader';
 import showNextScreen, {appendScreenElements} from './showNextScreen';
-import {gameLevels, answers, gameType, headerData, statsData, currentLevel} from './model';
+import {gameLevels, answers, gameType, headerData, statsData, currentLevel, getImages} from './model';
 import {statsWithState} from './gameStats';
 
 
@@ -36,13 +36,13 @@ export const showNextGame = () => {
 
   switch (gameLevels[currentLevel.level - 1]) {
     case gameType.ONE_IMAGE:
-      gameElement = game1Screen;
+      gameElement = game1Screen(getImages(1));
       break;
     case gameType.TWO_IMAGE:
-      gameElement = game2Screen;
+      gameElement = game2Screen(getImages(2));
       break;
     case gameType.THREE_IMAGE:
-      gameElement = game3Screen;
+      gameElement = game3Screen(getImages(3));
       break;
     default:
       // default action

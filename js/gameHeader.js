@@ -6,7 +6,7 @@ import greetingScreen from './screenGreeting';
 import createElement from './createDOMElement';
 import showNextScreen from './showNextScreen';
 
-const maxLives = 3;
+const MAX_LIVES = 3;
 const headerMarkup = (state) => `\
 <header class="header">
   <div class="header__back">
@@ -17,7 +17,7 @@ const headerMarkup = (state) => `\
   </div>
   <h1 class="game__timer"> ${state.time} </h1>
   <div class="game__lives">
-    ${new Array(maxLives - state.lives)
+    ${new Array(MAX_LIVES - state.lives)
       .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">`)
       .join(` `)}
       ${new Array(state.lives)

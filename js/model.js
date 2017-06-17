@@ -39,7 +39,6 @@ export const AnswerType = {
   SLOW: `<li class="stats__result stats__result--slow"></li>`
 };
 
-
 export const answers = {
   _userAnswers: [],
   get data() {
@@ -88,7 +87,7 @@ export const gameType = Object.freeze({
   THREE_IMAGE: 3
 });
 // TODO: generate levels here
-export const gameLevels = [2, 1, 3];
+export const gameLevels = [2, 1, 3, 2, 1, 3, 2, 1, 3];
 
 
 /**
@@ -100,7 +99,7 @@ export const statsData = {
     return this._stats;
   },
   set stats(answer) {
-    this._stats[currentLevel] = answer;
+    this._stats = answer;
   },
   reset() {
     this._stats = (new Array(10)).fill(AnswerType.UNKNOWN);
@@ -125,29 +124,101 @@ export const score = {
   NOMISTAKES: 50
 };
 
+export const allStats = {
+  _stats: {
+    name1: [],
+    name2: [],
+    name3: []
+  },
+  get stats() {
+    return this._stats;
+  },
+  set stats(finalAnswers) {
+    this._stats[userData.name] = finalAnswers;
+  }
+};
+
 
 /**
  * IMAGES
  */
-export const images = {
+const images = {
   paintings: [
     // People
     `https://k42.kn3.net/CF42609C8.jpg`,
-
+    `https://k42.kn3.net/CF42609C8.jpg`,
+    `https://k42.kn3.net/CF42609C8.jpg`,
+    `https://k42.kn3.net/CF42609C8.jpg`,
     // Animals
     `https://k42.kn3.net/D2F0370D6.jpg`,
-
+    `https://k42.kn3.net/D2F0370D6.jpg`,
+    `https://k42.kn3.net/D2F0370D6.jpg`,
+    `https://k42.kn3.net/D2F0370D6.jpg`,
     // Nature
+    `https://k32.kn3.net/5C7060EC5.jpg`,
+    `https://k32.kn3.net/5C7060EC5.jpg`,
+    `https://k32.kn3.net/5C7060EC5.jpg`,
     `https://k32.kn3.net/5C7060EC5.jpg`
   ],
   photos: [
     // People
     `http://i.imgur.com/1KegWPz.jpg`,
-
+    `http://i.imgur.com/1KegWPz.jpg`,
+    `http://i.imgur.com/1KegWPz.jpg`,
+    `http://i.imgur.com/1KegWPz.jpg`,
     // Animals
     `https://i.imgur.com/DiHM5Zb.jpg`,
-
+    `https://i.imgur.com/DiHM5Zb.jpg`,
+    `https://i.imgur.com/DiHM5Zb.jpg`,
+    `https://i.imgur.com/DiHM5Zb.jpg`,
     // Nature
+    `http://i.imgur.com/DKR1HtB.jpg`,
+    `http://i.imgur.com/DKR1HtB.jpg`,
+    `http://i.imgur.com/DKR1HtB.jpg`,
     `http://i.imgur.com/DKR1HtB.jpg`
   ]
+};
+
+export const taskType = {
+  0: `Найдите рисунок среди фотографий`,
+  1: `Найдите фотографию среди рисунков`
+};
+
+const getOneImage = (task) => {
+  const imagesArrayKey = Object.keys(images)[task]; // get object key with taskType
+  const randomImageNumber = Math.round(Math.random() * (images[imagesArrayKey].length - 1)); // get random array number
+  return images[imagesArrayKey][randomImageNumber]; // return image
+};
+
+let randomTask;
+const randomizeTask = () => {
+  randomTask = Math.round(Math.random());
+};
+// TODO: add duplicates check
+export const getImages = (amount) => {
+  let firstImage;
+  let secondImage;
+  let thirdImage;
+  randomizeTask();
+  let returnedValue = [];
+  switch (amount) {
+    case 1:
+      returnedValue = [getOneImage(randomTask), randomTask];
+      break;
+    case 2:
+      firstImage = [getOneImage(randomTask), randomTask];
+      randomizeTask();
+      secondImage = [getOneImage(randomTask), randomTask];
+      returnedValue = [firstImage, secondImage];
+      break;
+    case 3:
+      firstImage = [getOneImage(randomTask), randomTask];
+      secondImage = [getOneImage(randomTask), randomTask];
+      randomTask = +!randomTask;
+      thirdImage = [getOneImage(randomTask), randomTask];
+      // TODO: randomize third array
+      returnedValue = [firstImage, secondImage, thirdImage];
+      break;
+  }
+  return returnedValue;
 };
