@@ -32,6 +32,7 @@ const game1Screen = (photo) => {
   const img = game1Block.querySelector(`#imageid`);
   img.style.visibility = `hidden`;
   const parentRatio = img.width / img.height;
+  const containerHeight = img.height;
 
   img.onload = function () {
     const ratio = this.naturalWidth / this.naturalHeight;
@@ -41,6 +42,7 @@ const game1Screen = (photo) => {
     } else {
       img.style.width = `100%`;
       img.style.height = `auto`;
+      img.style.marginTop = (containerHeight - this.height) / 2 + "px";
     }
     img.style.visibility = `visible`;
   };

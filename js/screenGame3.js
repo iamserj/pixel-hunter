@@ -26,13 +26,16 @@ const game3Screen = (photo) => {
 
   const game3Block = createElement(game3Markup(photo));
 
+  // TODO: think about optimization
   const img1 = game3Block.querySelector(`#imageid1`);
   const img2 = game3Block.querySelector(`#imageid2`);
   const img3 = game3Block.querySelector(`#imageid3`);
   img1.style.visibility = `hidden`;
   img2.style.visibility = `hidden`;
   img3.style.visibility = `hidden`;
+
   const parentRatio = img1.width / img1.height;
+  const containerHeight = img1.height;
 
   img1.onload = function () {
     const ratio = this.naturalWidth / this.naturalHeight;
@@ -42,6 +45,7 @@ const game3Screen = (photo) => {
     } else {
       img1.style.width = `100%`;
       img1.style.height = `auto`;
+      img1.style.marginTop = (containerHeight - this.height) / 2 + "px";
     }
     img1.style.visibility = `visible`;
   };
@@ -53,6 +57,7 @@ const game3Screen = (photo) => {
     } else {
       img2.style.width = `100%`;
       img2.style.height = `auto`;
+      img2.style.marginTop = (containerHeight - this.height) / 2 + "px";
     }
     img2.style.visibility = `visible`;
   };
@@ -64,6 +69,7 @@ const game3Screen = (photo) => {
     } else {
       img3.style.width = `100%`;
       img3.style.height = `auto`;
+      img3.style.marginTop = (containerHeight - this.height) / 2 + "px";
     }
     img3.style.visibility = `visible`;
   };

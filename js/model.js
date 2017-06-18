@@ -86,8 +86,16 @@ export const gameType = Object.freeze({
   TWO_IMAGE: 2,
   THREE_IMAGE: 3
 });
-// TODO: generate levels here
-export const gameLevels = [2, 1, 3, 2, 1, 3, 2, 1, 3];
+
+export const levelTypes = {
+  _levels: [],
+  get levelsArray() {
+    return this._levels;
+  },
+  reset() {
+    this._levels = [...new Array(10)].map(() => Math.round(Math.random() * 2) + 1);
+  }
+};
 
 
 /**
@@ -142,6 +150,7 @@ export const allStats = {
 /**
  * IMAGES
  */
+// TODO: add normal photos/images
 const images = {
   paintings: [
     // People
@@ -179,6 +188,7 @@ const images = {
   ]
 };
 
+// TODO: add task to markup
 export const taskType = {
   0: `Найдите рисунок среди фотографий`,
   1: `Найдите фотографию среди рисунков`
@@ -214,10 +224,14 @@ export const getImages = (amount) => {
     case 3:
       firstImage = [getOneImage(randomTask), randomTask];
       secondImage = [getOneImage(randomTask), randomTask];
-      randomTask = +!randomTask;
+      randomTask = +!randomTask; // change task
       thirdImage = [getOneImage(randomTask), randomTask];
-      // TODO: randomize third array
       returnedValue = [firstImage, secondImage, thirdImage];
+      // shuffle images:
+      for (let i = returnedValue.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [returnedValue[i - 1], returnedValue[j]] = [returnedValue[j], returnedValue[i - 1]];
+      }
       break;
   }
   return returnedValue;

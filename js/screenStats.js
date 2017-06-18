@@ -116,6 +116,7 @@ const statsMarkup = `\
   </table>
 </div>`;
 
+// TODO: clean screen, fill dynamically
 const statsScreen = createElement(statsMarkup);
 const backButton = statsScreen.querySelector(`.header__back`);
 

@@ -8,7 +8,7 @@ import game3Screen from './screenGame3';
 import statsScreen from './screenStats';
 import {headerWithState, startTimer} from './gameHeader';
 import showNextScreen, {appendScreenElements} from './showNextScreen';
-import {gameLevels, answers, gameType, headerData, statsData, currentLevel, getImages} from './model';
+import {levelTypes, answers, gameType, headerData, statsData, currentLevel, getImages} from './model';
 import {statsWithState} from './gameStats';
 
 
@@ -20,12 +20,12 @@ export const resetGame = () => {
   currentLevel.reset();
   headerData.reset();
   answers.reset();
-  // TODO: generate new levels array (gameLevels)
+  levelTypes.reset();
   statsData.reset();
 };
 
 export const showNextGame = () => {
-  if (currentLevel.level === gameLevels.length) {
+  if (currentLevel.level === levelTypes.levelsArray.length) {
     showNextScreen(statsScreen);
     return;
   }
@@ -34,7 +34,7 @@ export const showNextGame = () => {
 
   headerElement = headerWithState(headerData);
 
-  switch (gameLevels[currentLevel.level - 1]) {
+  switch (levelTypes.levelsArray[currentLevel.level - 1]) {
     case gameType.ONE_IMAGE:
       gameElement = game1Screen(getImages(1));
       break;
