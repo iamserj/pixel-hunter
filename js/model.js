@@ -93,7 +93,8 @@ export const levelTypes = {
     return this._levels;
   },
   reset() {
-    this._levels = [...new Array(10)].map(() => Math.round(Math.random() * 2) + 1);
+    const gameTypeLength = Object.keys(gameType).length;
+    this._levels = [...new Array(10)].map(() => Math.floor(1 + Math.random() * gameTypeLength));
   }
 };
 
@@ -196,20 +197,19 @@ export const taskType = {
 
 const getOneImage = (task) => {
   const imagesArrayKey = Object.keys(images)[task]; // get object key with taskType
-  const randomImageNumber = Math.round(Math.random() * (images[imagesArrayKey].length - 1)); // get random array number
+  const randomImageNumber = Math.floor(Math.random() * (images[imagesArrayKey].length)); // get random array number
   return images[imagesArrayKey][randomImageNumber]; // return image
 };
 
-let randomTask;
-const randomizeTask = () => {
-  randomTask = Math.round(Math.random());
-};
+
+const randomizeTask = () => Math.round(Math.random());
+
 // TODO: add duplicates check
 export const getImages = (amount) => {
+  let randomTask = randomizeTask();
   let firstImage;
   let secondImage;
   let thirdImage;
-  randomizeTask();
   let returnedValue = [];
   switch (amount) {
     case 1:
@@ -217,7 +217,7 @@ export const getImages = (amount) => {
       break;
     case 2:
       firstImage = [getOneImage(randomTask), randomTask];
-      randomizeTask();
+      randomTask = randomizeTask();
       secondImage = [getOneImage(randomTask), randomTask];
       returnedValue = [firstImage, secondImage];
       break;
@@ -227,8 +227,8 @@ export const getImages = (amount) => {
       randomTask = +!randomTask; // change task
       thirdImage = [getOneImage(randomTask), randomTask];
       returnedValue = [firstImage, secondImage, thirdImage];
-      // shuffle images:
-      for (let i = returnedValue.length; i; i--) {
+      // shuffle images
+      for (let i = 1; i <= returnedValue.length; i++) {
         let j = Math.floor(Math.random() * i);
         [returnedValue[i - 1], returnedValue[j]] = [returnedValue[j], returnedValue[i - 1]];
       }

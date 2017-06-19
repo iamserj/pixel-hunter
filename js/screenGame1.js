@@ -42,7 +42,7 @@ const game1Screen = (photo) => {
     } else {
       img.style.width = `100%`;
       img.style.height = `auto`;
-      img.style.marginTop = (containerHeight - this.height) / 2 + "px";
+      img.style.marginTop = (containerHeight - this.height) / 2 + `px`;
     }
     img.style.visibility = `visible`;
   };

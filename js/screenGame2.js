@@ -58,7 +58,7 @@ const game2Screen = (photo) => {
     } else {
       img1.style.width = `100%`;
       img1.style.height = `auto`;
-      img1.style.marginTop = (containerHeight - this.height) / 2 + "px";
+      img1.style.marginTop = (containerHeight - this.height) / 2 + `px`;
     }
     img1.style.visibility = `visible`;
   };
@@ -70,7 +70,7 @@ const game2Screen = (photo) => {
     } else {
       img2.style.width = `100%`;
       img2.style.height = `auto`;
-      img2.style.marginTop = (containerHeight - this.height) / 2 + "px";
+      img2.style.marginTop = (containerHeight - this.height) / 2 + `px`;
     }
     img2.style.visibility = `visible`;
   };

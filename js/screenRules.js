@@ -3,7 +3,7 @@
  */
 
 import {userData} from './model';
-import {showNextGame, resetGame} from './game';
+import {resetAndStartGame} from './game';
 import greetingScreen from './screenGreeting';
 import createElement from './createDOMElement';
 import showNextScreen from './showNextScreen';
@@ -63,9 +63,9 @@ nameInput.addEventListener(`input`, nameInputInputHandler);
 const submitNameButtonHandler = (event) => {
   event.preventDefault();
   userData.name = nameInput.value;
-  resetGame();
-  showNextGame();
+  resetAndStartGame();
   nameInput.value = ``;
+  submitNameButton.disabled = true;
 };
 submitNameButton.addEventListener(`click`, submitNameButtonHandler);
 

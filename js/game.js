@@ -16,12 +16,13 @@ let headerElement;
 let gameElement;
 let statsElement;
 
-export const resetGame = () => {
+export const resetAndStartGame = () => {
   currentLevel.reset();
   headerData.reset();
   answers.reset();
   levelTypes.reset();
   statsData.reset();
+  showNextGame();
 };
 
 export const showNextGame = () => {
