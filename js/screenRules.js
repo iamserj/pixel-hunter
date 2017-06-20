@@ -2,7 +2,8 @@
  * Created by soniko on 30.05.2017.
  */
 
-import game1Screen from './screenGame1';
+import {userData} from './model';
+import {resetAndStartGame} from './game';
 import greetingScreen from './screenGreeting';
 import createElement from './createDOMElement';
 import showNextScreen from './showNextScreen';
@@ -28,34 +29,43 @@ const rulesMarkup = `\
     Готовы?
   </p>
   <form class="rules__form">
-    <input class="rules__input" type="text" placeholder="Ваше Имя" pattern="[A-Za-z]" maxlength="22" required>
+    <input class="rules__input" type="text" placeholder="Ваше Имя" required>
     <button class="rules__button  continue" type="submit" disabled>Go!</button>
   </form>
-</div>
-<footer class="footer">
-  <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
-  <span class="footer__made-in">Сделано в <a href="https://htmlacademy.ru" class="footer__link">HTML Academy</a> &copy; 2017</span>
-  <div class="footer__social-links">
-    <a href="https://twitter.com/htmlacademy_ru" class="social-link  social-link--tw">Твиттер</a>
-    <a href="https://www.instagram.com/htmlacademy/" class="social-link  social-link--ins">Инстаграм</a>
-    <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
-    <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
-  </div>
-</footer>`;
+</div>`;
 
 const rulesScreen = createElement(rulesMarkup);
 const nameInput = rulesScreen.querySelector(`.rules__input`);
 const submitNameButton = rulesScreen.querySelector(`.rules__button`);
 const backButton = rulesScreen.querySelector(`.header__back`);
 
-const nameInputInputHandler = (event) => {
-  submitNameButton.disabled = nameInput.value ? false : true;
+const NAME_MIN_LENGTH = 2;
+const NAME_MAX_LENGTH = 22;
+const NAME_REGEXP = new RegExp(`[A-Za-zА-Яа-яЁё0-9_.-]+`);
+
+const nameInputKeyHandler = (event) => {
+  const keyValue = String.fromCharCode(event.which);
+  if (!NAME_REGEXP.test(keyValue)) {
+    event.preventDefault();
+  }
 };
+const nameInputInputHandler = (event) => {
+  const name = nameInput.value.length;
+  if (name >= NAME_MIN_LENGTH && name < NAME_MAX_LENGTH) {
+    submitNameButton.disabled = false;
+  } else {
+    submitNameButton.disabled = true;
+  }
+};
+nameInput.addEventListener(`keypress`, nameInputKeyHandler);
 nameInput.addEventListener(`input`, nameInputInputHandler);
 
 const submitNameButtonHandler = (event) => {
   event.preventDefault();
-  showNextScreen(game1Screen);
+  userData.name = nameInput.value;
+  resetAndStartGame();
+  nameInput.value = ``;
+  submitNameButton.disabled = true;
 };
 submitNameButton.addEventListener(`click`, submitNameButtonHandler);
 

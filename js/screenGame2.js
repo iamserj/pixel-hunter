@@ -2,83 +2,106 @@
  * Created by soniko on 30.05.2017.
  */
 
-import game3Screen from './screenGame3';
-import greetingScreen from './screenGreeting';
 import createElement from './createDOMElement';
-import showNextScreen from './showNextScreen';
+import {showNextGame} from './game';
+import {answers, AnswerType} from './model';
 
-const game2Markup = `\
-<header class="header">
-  <div class="header__back">
-    <span class="back">
-      <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-      <img src="img/logo_small.png" width="101" height="44">
-    </span>
-  </div>
-  <h1 class="game__timer">NN</h1>
-  <div class="game__lives">
-    <img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">
-    <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-    <img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">
-  </div>
-</header>
+const game2Markup = (photo) => `\
 <div class="game">
-  <p class="game__task">Угадай, фото или рисунок?</p>
-  <form class="game__content  game__content--wide">
+  <p class="game__task">Угадайте для каждого изображения фото или рисунок?</p>
+  <form class="game__content">
     <div class="game__option">
-      <img src="http://placehold.it/705x455" alt="Option 1" width="705" height="455">
-      <label class="game__answer  game__answer--photo">
+      <img id="imageid1" src= ${photo[0][0]} alt="Option 1" width="468" height="458">
+      <label class="game__answer game__answer--photo">
         <input name="question1" type="radio" value="photo">
         <span>Фото</span>
       </label>
-      <label class="game__answer  game__answer--wide  game__answer--paint">
+      <label class="game__answer game__answer--paint">
         <input name="question1" type="radio" value="paint">
         <span>Рисунок</span>
       </label>
     </div>
+    <div class="game__option">
+      <img id="imageid2" src= ${photo[1][0]} alt="Option 2" width="468" height="458">
+      <label class="game__answer  game__answer--photo">
+        <input name="question2" type="radio" value="photo">
+        <span>Фото</span>
+      </label>
+      <label class="game__answer  game__answer--paint">
+        <input name="question2" type="radio" value="paint">
+        <span>Рисунок</span>
+      </label>
+    </div>
   </form>
-  <div class="stats">
-    <ul class="stats">
-      <li class="stats__result stats__result--wrong"></li>
-      <li class="stats__result stats__result--slow"></li>
-      <li class="stats__result stats__result--fast"></li>
-      <li class="stats__result stats__result--correct"></li>
-      <li class="stats__result stats__result--wrong"></li>
-      <li class="stats__result stats__result--unknown"></li>
-      <li class="stats__result stats__result--slow"></li>
-      <li class="stats__result stats__result--unknown"></li>
-      <li class="stats__result stats__result--fast"></li>
-      <li class="stats__result stats__result--unknown"></li>
-    </ul>
-  </div>
-</div>
-<footer class="footer">
-  <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
-  <span class="footer__made-in">Сделано в <a href="https://htmlacademy.ru" class="footer__link">HTML Academy</a> &copy; 2017</span>
-  <div class="footer__social-links">
-    <a href="https://twitter.com/htmlacademy_ru" class="social-link  social-link--tw">Твиттер</a>
-    <a href="https://www.instagram.com/htmlacademy/" class="social-link  social-link--ins">Инстаграм</a>
-    <a href="https://www.facebook.com/htmlacademy" class="social-link  social-link--fb">Фэйсбук</a>
-    <a href="https://vk.com/htmlacademy" class="social-link  social-link--vk">Вконтакте</a>
-  </div>
-</footer>`;
+</div>`;
 
-const game2Screen = createElement(game2Markup);
-const question1 = game2Screen.querySelectorAll(`input[name="question1"]`);
-const backButton = game2Screen.querySelector(`.header__back`);
+let answer1 = ``;
+let answer2 = ``;
 
-Array.from(question1).forEach((answer) => {
-  answer.addEventListener(`click`, function (event) {
-    event.preventDefault();
-    // TODO save answer.value here
-    showNextScreen(game3Screen);
+const game2Screen = (photo) => {
+
+  const game2Block = createElement(game2Markup(photo));
+
+  const img1 = game2Block.querySelector(`#imageid1`);
+  const img2 = game2Block.querySelector(`#imageid2`);
+  img1.style.visibility = `hidden`;
+  img2.style.visibility = `hidden`;
+
+  const parentRatio = img1.width / img1.height;
+  const containerHeight = img1.height;
+
+  img1.onload = function () {
+    const ratio = this.naturalWidth / this.naturalHeight;
+    if (ratio < parentRatio) {
+      img1.style.height = `100%`;
+      img1.style.width = `auto`;
+    } else {
+      img1.style.width = `100%`;
+      img1.style.height = `auto`;
+      img1.style.marginTop = (containerHeight - this.height) / 2 + `px`;
+    }
+    img1.style.visibility = `visible`;
+  };
+  img2.onload = function () {
+    const ratio = this.naturalWidth / this.naturalHeight;
+    if (ratio < parentRatio) {
+      img2.style.height = `100%`;
+      img2.style.width = `auto`;
+    } else {
+      img2.style.width = `100%`;
+      img2.style.height = `auto`;
+      img2.style.marginTop = (containerHeight - this.height) / 2 + `px`;
+    }
+    img2.style.visibility = `visible`;
+  };
+
+  const question1 = game2Block.querySelectorAll(`input[name="question1"]`);
+  const question2 = game2Block.querySelectorAll(`input[name="question2"]`);
+
+  Array.from(question1).forEach((answer) => {
+    answer.addEventListener(`click`, function (event) {
+      answer1 = answer.value;
+      checkAnotherAnswer();
+    });
   });
-});
 
-const backButtonHandler = (event) => {
-  event.preventDefault();
-  showNextScreen(greetingScreen);
+  Array.from(question2).forEach((answer) => {
+    answer.addEventListener(`click`, function (event) {
+      answer2 = answer.value;
+      checkAnotherAnswer();
+    });
+  });
+
+  return game2Block;
 };
-backButton.addEventListener(`click`, backButtonHandler);
+
+const checkAnotherAnswer = () => {
+  if (answer1 !== `` && answer2 !== ``) {
+    // TODO save answers here
+    answers.data = AnswerType.CORRECT;
+    showNextGame();
+    answer1 = answer2 = ``;
+  }
+};
 
 export default game2Screen;
