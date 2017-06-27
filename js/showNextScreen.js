@@ -14,6 +14,11 @@ export const appendScreenElements = (...elements) => {
   mainScreen.appendChild(footerBlock);
 };
 
+export const updateHeader = (headerElement = ``) => {
+  mainScreen.querySelector(`.header`).innerHTML = ``;
+  mainScreen.querySelector(`.header`).appendChild(headerElement);
+};
+
 const showNextScreen = (screen) => {
   mainScreen.innerHTML = ``;
   mainScreen.appendChild(screen);

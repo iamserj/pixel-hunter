@@ -3,6 +3,27 @@
  */
 
 
+export const MAX_LEVELS_AMOUNT = 10;
+export const ANSWER_VARIETY = [`paint`, `photo`];
+
+export const AnswerTiming = {
+  FAST: 20,
+  SLOW: 10
+};
+export const Result = {
+  WIN: `Победа!`,
+  LOSE: `Не победа!`
+};
+export const Score = {
+  UNKNOWN: 0,
+  CORRECT: 100,
+  WRONG: 0,
+  FAST: 150,
+  SLOW: 50,
+  NOMISTAKES: 50
+};
+
+
 /**
  * USERNAME
  */
@@ -31,36 +52,16 @@ export const currentLevel = {
   }
 };
 
-export const AnswerType = {
-  UNKNOWN: `<li class="stats__result stats__result--unknown"></li>`,
-  CORRECT: `<li class="stats__result stats__result--correct"></li>`,
-  WRONG: `<li class="stats__result stats__result--wrong"></li>`,
-  FAST: `<li class="stats__result stats__result--fast"></li>`,
-  SLOW: `<li class="stats__result stats__result--slow"></li>`
-};
-
-export const answers = {
-  _userAnswers: [],
-  get data() {
-    return this._userAnswers;
-  },
-  set data(nextAnswer) {
-    this._userAnswers[currentLevel.levelNumber] = nextAnswer;
-  },
-  reset() {
-    this._userAnswers = (new Array(10)).fill(AnswerType.UNKNOWN);
-  }
-};
-
-
 /**
  * GAME HEADER
  */
 export const headerData = {
   _headerTime: 0,
   _headerLives: 0,
-  reset() {
+  resetTime() {
     this._headerTime = 30;
+  },
+  resetLives() {
     this._headerLives = 3;
   },
   set time(time) {
@@ -74,6 +75,47 @@ export const headerData = {
   },
   get lives() {
     return this._headerLives;
+  }
+};
+
+/**
+ * ANSWERS
+ */
+export const AnswerType = {
+  UNKNOWN: `<li class="stats__result stats__result--unknown"></li>`,
+  CORRECT: `<li class="stats__result stats__result--correct"></li>`,
+  WRONG: `<li class="stats__result stats__result--wrong"></li>`,
+  FAST: `<li class="stats__result stats__result--fast"></li>`,
+  SLOW: `<li class="stats__result stats__result--slow"></li>`
+};
+
+export const answers = {
+  _userAnswers: [],
+  get data() {
+    return this._userAnswers;
+  },
+
+  check(userAnswer, correctAnswer) {
+    return (userAnswer === correctAnswer);
+  },
+
+  save(firstCorrect, secondCorrect = true) {
+    if (firstCorrect && secondCorrect) {
+      if (headerData.time >= AnswerTiming.FAST) {
+        this._userAnswers[currentLevel.level - 1] = AnswerType.FAST;
+      } else if (headerData.time < AnswerTiming.SLOW) {
+        this._userAnswers[currentLevel.level - 1] = AnswerType.SLOW;
+      } else {
+        this._userAnswers[currentLevel.level - 1] = AnswerType.CORRECT;
+      }
+    } else {
+      this._userAnswers[currentLevel.level - 1] = AnswerType.WRONG;
+      headerData.lives--;
+    }
+  },
+
+  reset() {
+    this._userAnswers = (new Array(MAX_LEVELS_AMOUNT)).fill(AnswerType.UNKNOWN);
   }
 };
 
@@ -94,7 +136,7 @@ export const levelTypes = {
   },
   reset() {
     const gameTypeLength = Object.keys(gameType).length;
-    this._levels = [...new Array(10)].map(() => Math.floor(1 + Math.random() * gameTypeLength));
+    this._levels = [...new Array(MAX_LEVELS_AMOUNT)].map(() => Math.floor(1 + Math.random() * gameTypeLength));
   }
 };
 
@@ -111,7 +153,7 @@ export const statsData = {
     this._stats = answer;
   },
   reset() {
-    this._stats = (new Array(10)).fill(AnswerType.UNKNOWN);
+    this._stats = (new Array(MAX_LEVELS_AMOUNT)).fill(AnswerType.UNKNOWN);
   }
 };
 
@@ -119,19 +161,6 @@ export const statsData = {
 /**
  * LAST SCREEN STATS
  */
-export const result = {
-  win: `Победа!`,
-  lose: `Не победа!`
-};
-
-export const score = {
-  UNKNOWN: 0,
-  CORRECT: 100,
-  WRONG: 0,
-  FAST: 150,
-  SLOW: 50,
-  NOMISTAKES: 50
-};
 
 export const allStats = {
   _stats: {
@@ -213,19 +242,19 @@ export const getImages = (amount) => {
   let returnedValue = [];
   switch (amount) {
     case 1:
-      returnedValue = [getOneImage(randomTask), randomTask];
+      returnedValue = [getOneImage(randomTask), ANSWER_VARIETY[randomTask]];
       break;
     case 2:
-      firstImage = [getOneImage(randomTask), randomTask];
+      firstImage = [getOneImage(randomTask), ANSWER_VARIETY[randomTask]];
       randomTask = randomizeTask();
-      secondImage = [getOneImage(randomTask), randomTask];
+      secondImage = [getOneImage(randomTask), ANSWER_VARIETY[randomTask]];
       returnedValue = [firstImage, secondImage];
       break;
     case 3:
-      firstImage = [getOneImage(randomTask), randomTask];
-      secondImage = [getOneImage(randomTask), randomTask];
+      firstImage = [getOneImage(randomTask), ANSWER_VARIETY[randomTask]];
+      secondImage = [getOneImage(randomTask), ANSWER_VARIETY[randomTask]];
       randomTask = +!randomTask; // change task
-      thirdImage = [getOneImage(randomTask), randomTask];
+      thirdImage = [getOneImage(randomTask), ANSWER_VARIETY[randomTask]];
       returnedValue = [firstImage, secondImage, thirdImage];
       // shuffle images
       for (let i = 1; i <= returnedValue.length; i++) {

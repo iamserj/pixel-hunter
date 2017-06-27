@@ -4,14 +4,14 @@
 
 import createElement from './createDOMElement';
 import {showNextGame} from './game';
-import {answers, AnswerType} from './model';
+import {answers} from './model';
 
-const game1Markup = (photo) => `\
+const game1Markup = (image) => `\
 <div class="game">
   <p class="game__task">Угадайте, фото или рисунок?</p>
   <form class="game__content  game__content--wide">
     <div class="game__option">
-      <img id="imageid" src= ${photo[0]} alt="Option 1" width="705" height="455">
+      <img id="imageid" src= ${image[0]} alt="Option 1" width="705" height="455">
       <label class="game__answer  game__answer--photo">
         <input name="question1" type="radio" value="photo">
         <span>Фото</span>
@@ -25,10 +25,9 @@ const game1Markup = (photo) => `\
 </div>`;
 
 
-const game1Screen = (photo) => {
+const game1Screen = (image) => {
 
-  const game1Block = createElement(game1Markup(photo));
-
+  const game1Block = createElement(game1Markup(image));
   const img = game1Block.querySelector(`#imageid`);
   img.style.visibility = `hidden`;
   const parentRatio = img.width / img.height;
@@ -51,8 +50,8 @@ const game1Screen = (photo) => {
 
   Array.from(question1).forEach((answer) => {
     answer.addEventListener(`click`, function (event) {
-      // TODO save answer.value here
-      answers.data = AnswerType.CORRECT;
+      const isCorrect = answers.check(event.target.value, image[1]);
+      answers.save(isCorrect);
       showNextGame();
     });
   });
