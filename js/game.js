@@ -8,7 +8,7 @@ import game3Screen from './screenGame3';
 import statsScreen from './screenStats';
 import {headerWithState, startTimer, stopTimer} from './gameHeader';
 import showNextScreen, {appendScreenElements} from './showNextScreen';
-import {levelTypes, answers, gameType, headerData, statsData, currentLevel, getImages, MAX_LEVELS_AMOUNT} from './model';
+import {levelTypes, answers, gameType, headerData, statsData, currentLevel, getImages, MAX_LEVELS_AMOUNT} from './data';
 import {statsWithState} from './gameStats';
 
 

@@ -2,7 +2,7 @@
  * Created by soniko on 30.05.2017.
  */
 
-import {userData} from './model';
+import {userData} from './data';
 import {resetAndStartGame} from './game';
 import greetingScreen from './screenGreeting';
 import createElement from './createDOMElement';

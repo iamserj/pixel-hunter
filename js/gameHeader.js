@@ -6,7 +6,7 @@ import greetingScreen from './screenGreeting';
 import createElement from './createDOMElement';
 import showNextScreen, {updateHeader} from './showNextScreen';
 import {showNextGame} from './game';
-import {headerData, answers} from './model';
+import {headerData, answers} from './data';
 
 const MAX_LIVES = 3;
 const headerMarkup = (state) => `\

@@ -4,7 +4,8 @@
 
 import createElement from './createDOMElement';
 import {showNextGame} from './game';
-import {answers} from './model';
+import {answers} from './data';
+import resizeImage from './resizeImage';
 
 const game1Markup = (image) => `\
 <div class="game">
@@ -26,23 +27,17 @@ const game1Markup = (image) => `\
 
 
 const game1Screen = (image) => {
-
   const game1Block = createElement(game1Markup(image));
   const img = game1Block.querySelector(`#imageid`);
   img.style.visibility = `hidden`;
-  const parentRatio = img.width / img.height;
-  const containerHeight = img.height;
+  const frame = {width: img.width, height: img.height};
 
   img.onload = function () {
-    const ratio = this.naturalWidth / this.naturalHeight;
-    if (ratio < parentRatio) {
-      img.style.height = `100%`;
-      img.style.width = `auto`;
-    } else {
-      img.style.width = `100%`;
-      img.style.height = `auto`;
-      img.style.marginTop = (containerHeight - this.height) / 2 + `px`;
-    }
+    const natural = {width: img.naturalWidth, height: img.naturalHeight};
+    const actualSize = resizeImage(frame, natural);
+    img.style.width = actualSize.width + `px`;
+    img.style.height = actualSize.height + `px`;
+    img.style.marginTop = (frame.height - this.height) / 2 + `px`;
     img.style.visibility = `visible`;
   };
 
