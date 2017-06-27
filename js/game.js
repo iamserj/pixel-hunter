@@ -6,9 +6,9 @@ import game1Screen from './screenGame1';
 import game2Screen from './screenGame2';
 import game3Screen from './screenGame3';
 import statsScreen from './screenStats';
-import {headerWithState, startTimer} from './gameHeader';
+import {headerWithState, startTimer, stopTimer} from './gameHeader';
 import showNextScreen, {appendScreenElements} from './showNextScreen';
-import {levelTypes, answers, gameType, headerData, statsData, currentLevel, getImages} from './model';
+import {levelTypes, answers, gameType, headerData, statsData, currentLevel, getImages, MAX_LEVELS_AMOUNT} from './model';
 import {statsWithState} from './gameStats';
 
 
@@ -18,7 +18,7 @@ let statsElement;
 
 export const resetAndStartGame = () => {
   currentLevel.reset();
-  headerData.reset();
+  headerData.resetLives();
   answers.reset();
   levelTypes.reset();
   statsData.reset();
@@ -26,13 +26,15 @@ export const resetAndStartGame = () => {
 };
 
 export const showNextGame = () => {
-  if (currentLevel.level === levelTypes.levelsArray.length) {
+  if (currentLevel.level === MAX_LEVELS_AMOUNT || headerData.lives === 0) {
+    stopTimer();
     showNextScreen(statsScreen);
     return;
   }
 
   currentLevel.up();
 
+  headerData.resetTime();
   headerElement = headerWithState(headerData);
 
   switch (levelTypes.levelsArray[currentLevel.level - 1]) {
@@ -54,12 +56,4 @@ export const showNextGame = () => {
   appendScreenElements(headerElement, gameElement, statsElement);
 
   startTimer();
-};
-
-export const updateHeader = () => {
-  if (headerElement) {
-    // headerElement = headerWithState(currentHeaderState);  // set current header state
-    // mainScreen.querySelector(`.header`).innerHTML = ``;
-    // mainScreen.querySelector(`.header`).appendChild(headerElement);
-  }
 };

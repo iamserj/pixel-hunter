@@ -4,27 +4,27 @@
 
 import createElement from './createDOMElement';
 import {showNextGame} from './game';
-import {answers, AnswerType} from './model';
+import {answers} from './model';
 
-const game3Markup = (photo) => `\
+const game3Markup = (image) => `\
 <div class="game">
   <p class="game__task">Найдите рисунок среди изображений</p>
   <form class="game__content game__content--triple">
-    <div class="game__option">
-      <img id="imageid1" src= ${photo[0][0]} alt="Option 1" width="304" height="455">
+    <div class="game__option" id="option0">
+      <img id="imageid1" src= ${image[0][0]} alt="Option 1" width="304" height="455">
     </div>
-    <div class="game__option  game__option--selected">
-      <img id="imageid2" src= ${photo[1][0]} alt="Option 1" width="304" height="455">
+    <div class="game__option" id="option1">
+      <img id="imageid2" src= ${image[1][0]} alt="Option 1" width="304" height="455">
     </div>
-    <div class="game__option">
-      <img id="imageid3" src= ${photo[2][0]} alt="Option 1" width="304" height="455">
+    <div class="game__option" id="option2">
+      <img id="imageid3" src= ${image[2][0]} alt="Option 1" width="304" height="455">
     </div>
   </form>
 </div>`;
 
-const game3Screen = (photo) => {
+const game3Screen = (image) => {
 
-  const game3Block = createElement(game3Markup(photo));
+  const game3Block = createElement(game3Markup(image));
 
   // TODO: think about optimization
   const img1 = game3Block.querySelector(`#imageid1`);
@@ -78,8 +78,17 @@ const game3Screen = (photo) => {
 
   Array.from(question1).forEach((answer) => {
     answer.addEventListener(`click`, function (event) {
-      // TODO save answer here
-      answers.data = AnswerType.CORRECT;
+      const selectedAnswer = image[event.target.id.slice(-1)][1];
+      const availableAnswers = Array.prototype.slice.call(document.querySelectorAll(`.game__option`));
+      availableAnswers.forEach(function (item, i) {
+        if (item === event.target) {
+          availableAnswers.splice(i, 1);
+        }
+      });
+      const anotherAnswer0 = image[availableAnswers[0].id.slice(-1)][1];
+      const anotherAnswer1 = image[availableAnswers[1].id.slice(-1)][1];
+      answers.save(selectedAnswer !== anotherAnswer0 && selectedAnswer !== anotherAnswer1);
+
       showNextGame();
     });
   });

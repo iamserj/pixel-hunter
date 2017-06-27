@@ -4,7 +4,9 @@
 
 import greetingScreen from './screenGreeting';
 import createElement from './createDOMElement';
-import showNextScreen from './showNextScreen';
+import showNextScreen, {updateHeader} from './showNextScreen';
+import {showNextGame} from './game';
+import {headerData, answers} from './model';
 
 const MAX_LIVES = 3;
 const headerMarkup = (state) => `\
@@ -42,19 +44,22 @@ const backButtonHandler = (event) => {
 
 let intervalId;
 
-export const startTimer = () => {
-  /* clearInterval(intervalId);
-  currentHeaderState.time = headerData.time;  // reset timer
-  intervalId = setInterval(function() {
-    currentHeaderState.time--;
-    updateHeader();
-    if (currentHeaderState.time === 0) {
-      clearInterval(intervalId);
-      // TODO: go to the next level
-    }
-  }, 1000); */
+const timerCount = () => {
+  headerData.time--;
+  updateHeader(headerWithState(headerData));
+  if (headerData.time === 0) {
+    clearInterval(intervalId);
+    answers.save(false);
+    showNextGame();
+  }
 };
 
-export const stopGame = () => {
+export const startTimer = () => {
+  headerData.resetTime();
+  clearInterval(intervalId);
+  intervalId = setInterval(timerCount, 1000);
+};
+
+export const stopTimer = () => {
   clearInterval(intervalId);
 };
