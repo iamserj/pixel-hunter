@@ -3,11 +3,11 @@
  */
 
 import assert from 'assert';
-import {currentLevel, MAX_LEVELS_AMOUNT} from './model';
-import {headerData} from './model';
-import {gameType, levelTypes} from './model';
-import {AnswerType, AnswerTiming, answers} from './model';
-import {ScorePoints, score} from './model';
+import {currentLevel, MAX_LEVELS_AMOUNT} from './data';
+import {headerData} from './data';
+import {gameType, levelTypes} from './data';
+import {AnswerType, AnswerTiming, answers} from './data';
+import {ScorePoints, score} from './data';
 
 
 describe(`Game`, () => {
@@ -51,62 +51,62 @@ describe(`Game`, () => {
 
   });
 
-  describe(`Level type should be 1, 2, 3 and length must be less than 10`, () => {
+  // describe(`Level type should be 1, 2, 3 and length must be less than 10`, () => {
 
-    it(`levelTypes should present 1, 2 or 3`, () => {
-      levelTypes.reset();
-      levelTypes.levelsArray.forEach(function (element) {
-        assert.ok(element === gameType.ONE_IMAGE || element === gameType.TWO_IMAGE || element === gameType.THREE_IMAGE);
-      });
+  it(`levelTypes should present 1, 2 or 3`, () => {
+    levelTypes.reset();
+    levelTypes.levelsArray.forEach(function (element) {
+      assert.ok(element === gameType.ONE_IMAGE || element === gameType.TWO_IMAGE || element === gameType.THREE_IMAGE);
     });
-
-    it(`levelTypes should contain 10 elements`, () => {
-      assert.strictEqual(MAX_LEVELS_AMOUNT, levelTypes.levelsArray.length);
-    });
-
   });
+
+  it(`levelTypes should contain 10 elements`, () => {
+    assert.strictEqual(MAX_LEVELS_AMOUNT, levelTypes.levelsArray.length);
+  });
+
+  // });
 
   describe(`Answers check`, () => {
 
-    describe(`Correct and wrong check`, () => {
+    // describe(`Correct and wrong check`, () => {
 
-      it(`answer is correct if both of questions correct`, () => {
-        answers.save(true, true);
-        assert.ok(answers.data[currentLevel.level - 1] !== AnswerType.WRONG);
-      });
-
-      it(`answer is wrong if one of questions wrong`, () => {
-        answers.save(false, true);
-        assert.ok(answers.data[currentLevel.level - 1] === AnswerType.WRONG);
-        answers.save(true, false);
-        assert.ok(answers.data[currentLevel.level - 1] === AnswerType.WRONG);
-      });
-
-      it(`answer is wrong if both of questions wrong`, () => {
-        answers.save(false, false);
-        assert.ok(answers.data[currentLevel.level - 1] === AnswerType.WRONG);
-      });
-
+    it(`answer is correct if both of questions correct`, () => {
+      answers.save(true, true);
+      assert.ok(answers.data[currentLevel.level - 1] !== AnswerType.WRONG);
     });
 
-    describe(`Timing check`, () => {
+    it(`answer is wrong if one of questions wrong`, () => {
+      answers.save(false, true);
+      assert.ok(answers.data[currentLevel.level - 1] === AnswerType.WRONG);
+      answers.save(true, false);
+      assert.ok(answers.data[currentLevel.level - 1] === AnswerType.WRONG);
+    });
 
-      it(`answer timing FAST, CORRECT, SLOW`, () => {
-        headerData.resetTime();
-        for (let i = headerData.time; i >= 0; i--) {
-          headerData.time = i;
-          answers.save(true);
-          if (i >= AnswerTiming.FAST) {
-            assert.ok(answers.data[currentLevel.level - 1] === AnswerType.FAST);
-          } else if (i >= AnswerTiming.SLOW) {
-            assert.ok(answers.data[currentLevel.level - 1] === AnswerType.CORRECT);
-          } else {
-            assert.ok(answers.data[currentLevel.level - 1] === AnswerType.SLOW);
-          }
+    it(`answer is wrong if both of questions wrong`, () => {
+      answers.save(false, false);
+      assert.ok(answers.data[currentLevel.level - 1] === AnswerType.WRONG);
+    });
+
+    // });
+
+    // describe(`Timing check`, () => {
+
+    it(`answer timing FAST, CORRECT, SLOW`, () => {
+      headerData.resetTime();
+      for (let i = headerData.time; i >= 0; i--) {
+        headerData.time = i;
+        answers.save(true);
+        if (i >= AnswerTiming.FAST) {
+          assert.ok(answers.data[currentLevel.level - 1] === AnswerType.FAST);
+        } else if (i >= AnswerTiming.SLOW) {
+          assert.ok(answers.data[currentLevel.level - 1] === AnswerType.CORRECT);
+        } else {
+          assert.ok(answers.data[currentLevel.level - 1] === AnswerType.SLOW);
         }
-      });
-
+      }
     });
+
+    // });
 
   });
 

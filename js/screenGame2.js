@@ -4,7 +4,8 @@
 
 import createElement from './createDOMElement';
 import {showNextGame} from './game';
-import {answers} from './model';
+import {answers} from './data';
+import resizeImage from './resizeImage';
 
 const game2Markup = (image) => `\
 <div class="game">
@@ -45,32 +46,22 @@ const game2Screen = (image) => {
   const img2 = game2Block.querySelector(`#imageid2`);
   img1.style.visibility = `hidden`;
   img2.style.visibility = `hidden`;
-
-  const parentRatio = img1.width / img1.height;
-  const containerHeight = img1.height;
+  const frame = {width: img1.width, height: img1.height};
 
   img1.onload = function () {
-    const ratio = this.naturalWidth / this.naturalHeight;
-    if (ratio < parentRatio) {
-      img1.style.height = `100%`;
-      img1.style.width = `auto`;
-    } else {
-      img1.style.width = `100%`;
-      img1.style.height = `auto`;
-      img1.style.marginTop = (containerHeight - this.height) / 2 + `px`;
-    }
+    const natural = {width: img1.naturalWidth, height: img1.naturalHeight};
+    const actualSize = resizeImage(frame, natural);
+    img1.style.width = actualSize.width + `px`;
+    img1.style.height = actualSize.height + `px`;
+    img1.style.marginTop = (frame.height - this.height) / 2 + `px`;
     img1.style.visibility = `visible`;
   };
   img2.onload = function () {
-    const ratio = this.naturalWidth / this.naturalHeight;
-    if (ratio < parentRatio) {
-      img2.style.height = `100%`;
-      img2.style.width = `auto`;
-    } else {
-      img2.style.width = `100%`;
-      img2.style.height = `auto`;
-      img2.style.marginTop = (containerHeight - this.height) / 2 + `px`;
-    }
+    const natural = {width: img2.naturalWidth, height: img2.naturalHeight};
+    const actualSize = resizeImage(frame, natural);
+    img2.style.width = actualSize.width + `px`;
+    img2.style.height = actualSize.height + `px`;
+    img2.style.marginTop = (frame.height - this.height) / 2 + `px`;
     img2.style.visibility = `visible`;
   };
 
