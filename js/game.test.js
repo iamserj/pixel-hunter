@@ -3,42 +3,29 @@
  */
 
 import assert from 'assert';
-import {levelTypes, answers, headerData, statsData, currentLevel, MAX_LEVELS_AMOUNT} from './model';
+import {currentLevel, MAX_LEVELS_AMOUNT} from './model';
+import {headerData} from './model';
+import {gameType, levelTypes} from './model';
+import {AnswerType, AnswerTiming, answers} from './model';
+import {ScorePoints, score} from './model';
 
-const showNextGameTest = () => {
-  if (currentLevel.level === MAX_LEVELS_AMOUNT || headerData.lives === 0) {
-    return;
-  }
-  currentLevel.up();
-};
-
-const resetAndStartGameTest = () => {
-  currentLevel.reset();
-  headerData.resetLives();
-  answers.reset();
-  levelTypes.reset();
-  statsData.reset();
-  showNextGameTest();
-};
-
-const timerCountTest = () => {
-  if (headerData.time !== 0) {
-    headerData.time--;
-  }
-};
 
 describe(`Game`, () => {
 
-  describe(`Levels should start from 1 and shouldn't be greater than 10`, () => {
+  describe(`Current level should start from 1 and finish at 10`, () => {
 
-    it(`resetAndStartGame() should start levels from 1`, () => {
-      resetAndStartGameTest();
+    it(`Levels should starts from 1`, () => {
+      currentLevel.reset();
+      currentLevel.up();
       assert.strictEqual(1, currentLevel.level);
     });
 
-    it(`showNextGame() shouldn't increase level number higher than 10`, () => {
-      for (let i; i < 50; i++) {
-        showNextGameTest();
+    it(`showNextGame() shouldn't increase current level number higher than 10`, () => {
+      for (let i = 0; i < 50; i++) {
+        if (currentLevel.level === MAX_LEVELS_AMOUNT) {
+          return;
+        }
+        currentLevel.up();
       }
       assert.ok(currentLevel.level <= MAX_LEVELS_AMOUNT);
     });
@@ -52,11 +39,127 @@ describe(`Game`, () => {
       assert.strictEqual(30, headerData.time);
     });
 
-    it(`timerCount() shouldn't decrease headerData.time lower than 0`, () => {
-      for (let i; i < 50; i++) {
-        timerCountTest();
-        assert.strictEqual(0, headerData.time);
+    it(`timer shouldn't decrease time lower than 0`, () => {
+      for (let i = 0; i < 50; i++) {
+        if (headerData.time === 0) {
+          return;
+        }
+        headerData.time--;
       }
+      assert.strictEqual(0, headerData.time);
+    });
+
+  });
+
+  describe(`Level type should be 1, 2, 3 and length must be less than 10`, () => {
+
+    it(`levelTypes should present 1, 2 or 3`, () => {
+      levelTypes.reset();
+      levelTypes.levelsArray.forEach(function (element) {
+        assert.ok(element === gameType.ONE_IMAGE || element === gameType.TWO_IMAGE || element === gameType.THREE_IMAGE);
+      });
+    });
+
+    it(`levelTypes should contain 10 elements`, () => {
+      assert.strictEqual(MAX_LEVELS_AMOUNT, levelTypes.levelsArray.length);
+    });
+
+  });
+
+  describe(`Answers check`, () => {
+
+    describe(`Correct and wrong check`, () => {
+
+      it(`answer is correct if both of questions correct`, () => {
+        answers.save(true, true);
+        assert.ok(answers.data[currentLevel.level - 1] !== AnswerType.WRONG);
+      });
+
+      it(`answer is wrong if one of questions wrong`, () => {
+        answers.save(false, true);
+        assert.ok(answers.data[currentLevel.level - 1] === AnswerType.WRONG);
+        answers.save(true, false);
+        assert.ok(answers.data[currentLevel.level - 1] === AnswerType.WRONG);
+      });
+
+      it(`answer is wrong if both of questions wrong`, () => {
+        answers.save(false, false);
+        assert.ok(answers.data[currentLevel.level - 1] === AnswerType.WRONG);
+      });
+
+    });
+
+    describe(`Timing check`, () => {
+
+      it(`answer timing FAST, CORRECT, SLOW`, () => {
+        headerData.resetTime();
+        for (let i = headerData.time; i >= 0; i--) {
+          headerData.time = i;
+          answers.save(true);
+          if (i >= AnswerTiming.FAST) {
+            assert.ok(answers.data[currentLevel.level - 1] === AnswerType.FAST);
+          } else if (i >= AnswerTiming.SLOW) {
+            assert.ok(answers.data[currentLevel.level - 1] === AnswerType.CORRECT);
+          } else {
+            assert.ok(answers.data[currentLevel.level - 1] === AnswerType.SLOW);
+          }
+        }
+      });
+
+    });
+
+  });
+
+  describe(`Lives amount`, () => {
+
+    it(`Decrease number of lives in case of wrong answer`, () => {
+      headerData.resetLives();
+      const initialLivesMinusOne = headerData.lives - 1;
+      answers.save(false);
+      assert.strictEqual(headerData.lives, initialLivesMinusOne);
+    });
+
+  });
+
+});
+
+describe(`STATISTICS`, () => {
+
+  describe(`Score points`, () => {
+
+    it(`Correct answer adds 100 points`, () => {
+      score.reset();
+      const pointsPlus = score.points + ScorePoints.CORRECT;
+      score.add(ScorePoints.CORRECT);
+      assert.equal(pointsPlus, score.points);
+    });
+
+    it(`Fast answer adds 150 points`, () => {
+      score.reset();
+      const pointsPlus = score.points + ScorePoints.FAST;
+      score.add(ScorePoints.FAST);
+      assert.equal(pointsPlus, score.points);
+    });
+
+    it(`Slow answer adds 50 points`, () => {
+      score.reset();
+      const pointsPlus = score.points + ScorePoints.SLOW;
+      score.add(ScorePoints.SLOW);
+      assert.equal(pointsPlus, score.points);
+    });
+
+    it(`Saved lives adds 50 points`, () => {
+      score.reset();
+      headerData.resetLives();
+
+      let pointsCheck = score.points;
+
+      for (let i = headerData.lives; i > 0; i--) {
+        pointsCheck += ScorePoints.SAVEDLIVE;
+        score.add(ScorePoints.SAVEDLIVE);
+      }
+
+      assert.equal(pointsCheck, score.points);
     });
 
   });

@@ -14,13 +14,27 @@ export const Result = {
   WIN: `Победа!`,
   LOSE: `Не победа!`
 };
-export const Score = {
+export const ScorePoints = {
   UNKNOWN: 0,
   CORRECT: 100,
   WRONG: 0,
   FAST: 150,
   SLOW: 50,
-  NOMISTAKES: 50
+  NOMISTAKES: 50,
+  SAVEDLIVE: 50
+};
+
+export const score = {
+  _currentScore: 0,
+  reset() {
+    this._currentScore = 0;
+  },
+  add(points) {
+    this._currentScore += points;
+  },
+  get points() {
+    return this._currentScore;
+  }
 };
 
 
