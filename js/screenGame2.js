@@ -1,5 +1,5 @@
 /**
- * Created by soniko on 30.05.2017.
+ * Created by @iamserj on 30.05.2017.
  */
 
 import createElement from './createDOMElement';
@@ -46,29 +46,29 @@ const game2Screen = (image) => {
   const img2 = game2Block.querySelector(`#imageid2`);
   img1.style.visibility = `hidden`;
   img2.style.visibility = `hidden`;
-  const frame = {width: img1.width, height: img1.height};
+  const containerFrame = {width: img1.width, height: img1.height};
 
   img1.onload = function () {
-    const natural = {width: img1.naturalWidth, height: img1.naturalHeight};
-    const actualSize = resizeImage(frame, natural);
+    const naturalFrame = {width: img1.naturalWidth, height: img1.naturalHeight};
+    const actualSize = resizeImage(containerFrame, naturalFrame);
     img1.style.width = actualSize.width + `px`;
     img1.style.height = actualSize.height + `px`;
-    img1.style.marginTop = (frame.height - this.height) / 2 + `px`;
+    img1.style.marginTop = (containerFrame.height - this.height) / 2 + `px`;
     img1.style.visibility = `visible`;
   };
   img2.onload = function () {
-    const natural = {width: img2.naturalWidth, height: img2.naturalHeight};
-    const actualSize = resizeImage(frame, natural);
+    const naturalFrame = {width: img2.naturalWidth, height: img2.naturalHeight};
+    const actualSize = resizeImage(containerFrame, naturalFrame);
     img2.style.width = actualSize.width + `px`;
     img2.style.height = actualSize.height + `px`;
-    img2.style.marginTop = (frame.height - this.height) / 2 + `px`;
+    img2.style.marginTop = (containerFrame.height - this.height) / 2 + `px`;
     img2.style.visibility = `visible`;
   };
 
   const question1 = game2Block.querySelectorAll(`input[name="question1"]`);
   const question2 = game2Block.querySelectorAll(`input[name="question2"]`);
 
-  // TODO: if one answer selected, don't allow user to change it
+  // TODO: don't allow user to change answer if selected
   Array.from(question1).forEach((answer) => {
     answer.addEventListener(`click`, function (event) {
       answer1 = answer.value;

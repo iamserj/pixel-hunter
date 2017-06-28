@@ -1,5 +1,5 @@
 /**
- * Created by soniko on 08.06.2017.
+ * Created by @iamserj on 08.06.2017.
  */
 
 import createElement from './createDOMElement';

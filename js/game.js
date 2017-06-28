@@ -1,5 +1,5 @@
 /**
- * Created by soniko on 14.06.2017.
+ * Created by @iamserj on 14.06.2017.
  */
 
 import game1Screen from './screenGame1';
@@ -28,7 +28,7 @@ export const resetAndStartGame = () => {
 export const showNextGame = () => {
   if (currentLevel.level === MAX_LEVELS_AMOUNT || headerData.lives === 0) {
     stopTimer();
-    showNextScreen(statsScreen);
+    showNextScreen(statsScreen.element);
     return;
   }
 

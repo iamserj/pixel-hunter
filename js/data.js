@@ -1,7 +1,6 @@
 /**
- * Created by soniko on 12.06.2017.
+ * Created by @iamserj on 12.06.2017.
  */
-
 
 export const MAX_LEVELS_AMOUNT = 10;
 export const ANSWER_VARIETY = [`paint`, `photo`];
@@ -175,7 +174,6 @@ export const statsData = {
 /**
  * LAST SCREEN STATS
  */
-
 export const allStats = {
   _stats: {
     name1: [],
@@ -232,10 +230,18 @@ const images = {
   ]
 };
 
-// TODO: add task to markup
 export const taskType = {
-  0: `Найдите рисунок среди фотографий`,
-  1: `Найдите фотографию среди рисунков`
+  _currentTask: 0,
+  set task(task) {
+    this._currentTask = task;
+  },
+  get task() {
+    return this.taskText[this._currentTask];
+  },
+  taskText: {
+    0: `Найдите рисунок среди изображений`,
+    1: `Найдите фотографию среди изображений`
+  }
 };
 
 const getOneImage = (task) => {
@@ -269,6 +275,7 @@ export const getImages = (amount) => {
       secondImage = [getOneImage(randomTask), ANSWER_VARIETY[randomTask]];
       randomTask = +!randomTask; // change task
       thirdImage = [getOneImage(randomTask), ANSWER_VARIETY[randomTask]];
+      taskType.task = randomTask;
       returnedValue = [firstImage, secondImage, thirdImage];
       // shuffle images
       for (let i = 1; i <= returnedValue.length; i++) {

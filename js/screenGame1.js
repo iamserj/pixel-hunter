@@ -1,5 +1,5 @@
 /**
- * Created by soniko on 30.05.2017.
+ * Created by @iamserj on 30.05.2017.
  */
 
 import createElement from './createDOMElement';
@@ -30,14 +30,14 @@ const game1Screen = (image) => {
   const game1Block = createElement(game1Markup(image));
   const img = game1Block.querySelector(`#imageid`);
   img.style.visibility = `hidden`;
-  const frame = {width: img.width, height: img.height};
+  const containerFrame = {width: img.width, height: img.height};
 
   img.onload = function () {
-    const natural = {width: img.naturalWidth, height: img.naturalHeight};
-    const actualSize = resizeImage(frame, natural);
+    const naturalFrame = {width: img.naturalWidth, height: img.naturalHeight};
+    const actualSize = resizeImage(containerFrame, naturalFrame);
     img.style.width = actualSize.width + `px`;
     img.style.height = actualSize.height + `px`;
-    img.style.marginTop = (frame.height - this.height) / 2 + `px`;
+    img.style.marginTop = (containerFrame.height - this.height) / 2 + `px`;
     img.style.visibility = `visible`;
   };
 

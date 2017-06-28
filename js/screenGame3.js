@@ -1,15 +1,15 @@
 /**
- * Created by soniko on 30.05.2017.
+ * Created by @iamserj on 30.05.2017.
  */
 
 import createElement from './createDOMElement';
 import {showNextGame} from './game';
-import {answers} from './data';
+import {answers, taskType} from './data';
 import resizeImage from './resizeImage';
 
 const game3Markup = (image) => `\
 <div class="game">
-  <p class="game__task">Найдите рисунок среди изображений</p>
+  <p class="game__task">${taskType.task}</p>
   <form class="game__content game__content--triple">
     <div class="game__option" id="option0">
       <img id="imageid1" src= ${image[0][0]} alt="Option 1" width="304" height="455">
@@ -33,30 +33,30 @@ const game3Screen = (image) => {
   img1.style.visibility = `hidden`;
   img2.style.visibility = `hidden`;
   img3.style.visibility = `hidden`;
-  const frame = {width: img1.width, height: img1.height};
+  const containerFrame = {width: img1.width, height: img1.height};
 
   img1.onload = function () {
-    const natural = {width: img1.naturalWidth, height: img1.naturalHeight};
-    const actualSize = resizeImage(frame, natural);
+    const naturalFrame = {width: img1.naturalWidth, height: img1.naturalHeight};
+    const actualSize = resizeImage(containerFrame, naturalFrame);
     img1.style.width = actualSize.width + `px`;
     img1.style.height = actualSize.height + `px`;
-    img1.style.marginTop = (frame.height - this.height) / 2 + `px`;
+    img1.style.marginTop = (containerFrame.height - this.height) / 2 + `px`;
     img1.style.visibility = `visible`;
   };
   img2.onload = function () {
-    const natural = {width: img2.naturalWidth, height: img2.naturalHeight};
-    const actualSize = resizeImage(frame, natural);
+    const naturalFrame = {width: img2.naturalWidth, height: img2.naturalHeight};
+    const actualSize = resizeImage(containerFrame, naturalFrame);
     img2.style.width = actualSize.width + `px`;
     img2.style.height = actualSize.height + `px`;
-    img2.style.marginTop = (frame.height - this.height) / 2 + `px`;
+    img2.style.marginTop = (containerFrame.height - this.height) / 2 + `px`;
     img2.style.visibility = `visible`;
   };
   img3.onload = function () {
-    const natural = {width: img3.naturalWidth, height: img3.naturalHeight};
-    const actualSize = resizeImage(frame, natural);
+    const naturalFrame = {width: img3.naturalWidth, height: img3.naturalHeight};
+    const actualSize = resizeImage(containerFrame, naturalFrame);
     img3.style.width = actualSize.width + `px`;
     img3.style.height = actualSize.height + `px`;
-    img3.style.marginTop = (frame.height - this.height) / 2 + `px`;
+    img3.style.marginTop = (containerFrame.height - this.height) / 2 + `px`;
     img3.style.visibility = `visible`;
   };
 
@@ -64,6 +64,7 @@ const game3Screen = (image) => {
 
   Array.from(question1).forEach((answer) => {
     answer.addEventListener(`click`, function (event) {
+      // TODO: compare answer with taskType._currentTask
       const selectedAnswer = image[event.target.id.slice(-1)][1];
       const availableAnswers = Array.prototype.slice.call(document.querySelectorAll(`.game__option`));
       availableAnswers.forEach(function (item, i) {

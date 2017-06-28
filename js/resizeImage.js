@@ -1,20 +1,20 @@
 /**
- * Created by soniko on 27.06.2017.
+ * Created by @iamserj on 27.06.2017.
  */
 
-const resizeImage = (frame, given) => {
+const resizeImage = (containerFrame, naturalImage) => {
 
-  const ratio = given.width / given.height;
+  const ratio = naturalImage.width / naturalImage.height;
 
   let actualWidth;
   let actualHeight;
 
-  if ((frame.width / ratio) < frame.height) {
-    actualWidth = frame.width;
-    actualHeight = frame.width / ratio;
+  if ((containerFrame.width / ratio) < containerFrame.height) {
+    actualWidth = containerFrame.width;
+    actualHeight = containerFrame.width / ratio;
   } else {
-    actualWidth = frame.height * ratio;
-    actualHeight = frame.height;
+    actualWidth = containerFrame.height * ratio;
+    actualHeight = containerFrame.height;
   }
 
   return {

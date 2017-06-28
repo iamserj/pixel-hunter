@@ -1,5 +1,5 @@
 /**
- * Created by soniko on 01.06.2017.
+ * Created by @iamserj on 01.06.2017.
  */
 
 import footerBlock from './moduleFooter';

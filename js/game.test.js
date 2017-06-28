@@ -1,5 +1,5 @@
 /**
- * Created by soniko on 26.06.2017.
+ * Created by @iamserj on 26.06.2017.
  */
 
 import assert from 'assert';
@@ -51,6 +51,7 @@ describe(`Game`, () => {
 
   });
 
+  // commented to disable eslint error: Too many nested callbacks (4). Maximum allowed is 3  max-nested-callbacks
   // describe(`Level type should be 1, 2, 3 and length must be less than 10`, () => {
 
   it(`levelTypes should present 1, 2 or 3`, () => {
@@ -68,6 +69,7 @@ describe(`Game`, () => {
 
   describe(`Answers check`, () => {
 
+    // commented to disable eslint error: Too many nested callbacks (4). Maximum allowed is 3  max-nested-callbacks
     // describe(`Correct and wrong check`, () => {
 
     it(`answer is correct if both of questions correct`, () => {
@@ -89,6 +91,7 @@ describe(`Game`, () => {
 
     // });
 
+    // commented to disable eslint error: Too many nested callbacks (4). Maximum allowed is 3  max-nested-callbacks
     // describe(`Timing check`, () => {
 
     it(`answer timing FAST, CORRECT, SLOW`, () => {
@@ -158,7 +161,6 @@ describe(`STATISTICS`, () => {
         pointsCheck += ScorePoints.SAVEDLIVE;
         score.add(ScorePoints.SAVEDLIVE);
       }
-
       assert.equal(pointsCheck, score.points);
     });
 

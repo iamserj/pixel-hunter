@@ -1,5 +1,5 @@
 /**
- * Created by soniko on 12.06.2017.
+ * Created by @iamserj on 12.06.2017.
  */
 
 import greetingScreen from './screenGreeting';
