@@ -2,8 +2,12 @@
  * Created by @iamserj on 12.06.2017.
  */
 
+export const MAX_LIVES = 3;
 export const MAX_LEVELS_AMOUNT = 10;
 export const ANSWER_VARIETY = [`paint`, `photo`];
+export const NAME_MIN_LENGTH = 2;
+export const NAME_MAX_LENGTH = 20;
+export const NAME_REGEXP = new RegExp(`[A-Za-zА-Яа-яЁё0-9_.-]+`);
 
 export const AnswerTiming = {
   FAST: 20,
@@ -71,11 +75,13 @@ export const currentLevel = {
 export const headerData = {
   _headerTime: 0,
   _headerLives: 0,
+  _headerResult: ``,
   resetTime() {
-    this._headerTime = 30;
+    this._headerTime = 300;
   },
   resetLives() {
     this._headerLives = 3;
+    this._headerResult = Result.WIN;
   },
   set time(time) {
     this._headerTime = time;
@@ -84,10 +90,16 @@ export const headerData = {
     return this._headerTime;
   },
   set lives(lives) {
+    if (lives === 0) {
+      this._headerResult = Result.LOSE;
+    }
     this._headerLives = lives;
   },
   get lives() {
     return this._headerLives;
+  },
+  get result() {
+    return this._headerResult;
   }
 };
 
@@ -104,6 +116,7 @@ export const AnswerType = {
 
 export const answers = {
   _userAnswers: [],
+
   get data() {
     return this._userAnswers;
   },
@@ -136,7 +149,7 @@ export const answers = {
 /**
  * GAME TYPE
  */
-export const gameType = Object.freeze({
+export const GameType = Object.freeze({
   ONE_IMAGE: 1,
   TWO_IMAGE: 2,
   THREE_IMAGE: 3
@@ -148,7 +161,7 @@ export const levelTypes = {
     return this._levels;
   },
   reset() {
-    const gameTypeLength = Object.keys(gameType).length;
+    const gameTypeLength = Object.keys(GameType).length;
     this._levels = [...new Array(MAX_LEVELS_AMOUNT)].map(() => Math.floor(1 + Math.random() * gameTypeLength));
   }
 };
@@ -232,22 +245,25 @@ const images = {
 
 export const taskType = {
   _currentTask: 0,
+  _taskText: {
+    0: `Найдите рисунок среди изображений`,
+    1: `Найдите фотографию среди изображений`
+  },
   set task(task) {
     this._currentTask = task;
   },
   get task() {
-    return this.taskText[this._currentTask];
+    return this._currentTask;
   },
-  taskText: {
-    0: `Найдите рисунок среди изображений`,
-    1: `Найдите фотографию среди изображений`
+  get taskText() {
+    return this._taskText[this._currentTask];
   }
 };
 
 const getOneImage = (task) => {
   const imagesArrayKey = Object.keys(images)[task]; // get object key with taskType
   const randomImageNumber = Math.floor(Math.random() * (images[imagesArrayKey].length)); // get random array number
-  return images[imagesArrayKey][randomImageNumber]; // return image
+  return images[imagesArrayKey][randomImageNumber] + `?` + Math.round(Math.random() * 1e9); // return image
 };
 
 

@@ -2,7 +2,7 @@
  * Created by @iamserj on 30.05.2017.
  */
 
-import AbstractView from './view';
+import AbstractView from '../view';
 
 const greetingMarkup = `\
 <div class="greeting central--blur">
@@ -27,10 +27,13 @@ export default class GreetingScreenView extends AbstractView {
 
   bind() {
     const nextButton = this.element.querySelector(`.greeting__continue`);
-    nextButton.onclick = (event) => {
+
+    const nextButtonClick = (event) => {
       event.preventDefault();
       this.nextButtonHandler();
     };
+
+    nextButton.addEventListener(`click`, nextButtonClick);
   }
 
   nextButtonHandler() {}

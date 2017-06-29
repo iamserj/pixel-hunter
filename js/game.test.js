@@ -5,7 +5,7 @@
 import assert from 'assert';
 import {currentLevel, MAX_LEVELS_AMOUNT} from './data';
 import {headerData} from './data';
-import {gameType, levelTypes} from './data';
+import {GameType, levelTypes} from './data';
 import {AnswerType, AnswerTiming, answers} from './data';
 import {ScorePoints, score} from './data';
 
@@ -57,7 +57,7 @@ describe(`Game`, () => {
   it(`levelTypes should present 1, 2 or 3`, () => {
     levelTypes.reset();
     levelTypes.levelsArray.forEach(function (element) {
-      assert.ok(element === gameType.ONE_IMAGE || element === gameType.TWO_IMAGE || element === gameType.THREE_IMAGE);
+      assert.ok(element === GameType.ONE_IMAGE || element === GameType.TWO_IMAGE || element === GameType.THREE_IMAGE);
     });
   });
 

@@ -2,7 +2,7 @@
  * Created by @iamserj on 28.06.2017.
  */
 
-import AbstractView from './view';
+import AbstractView from '../view';
 
 const introMarkup = `\
 <div id="main" class="central__content">
@@ -20,10 +20,13 @@ export default class IntroScreenView extends AbstractView {
 
   bind() {
     const asterisk = this.element.querySelector(`.intro__asterisk`);
-    asterisk.onclick = (event) => {
+
+    const asteriskClick = (event) => {
       event.preventDefault();
       this.asteriskHandler();
     };
+
+    asterisk.addEventListener(`click`, asteriskClick);
   }
 
   asteriskHandler() {}

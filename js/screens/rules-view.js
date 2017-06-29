@@ -2,7 +2,7 @@
  * Created by @iamserj on 30.05.2017.
  */
 
-import AbstractView from './view';
+import AbstractView from '../view';
 
 const rulesMarkup = `\
 <header class="header">
@@ -54,26 +54,24 @@ export default class RulesScreenView extends AbstractView {
     submitNameButton = this.element.querySelector(`.rules__button`);
     backButton = this.element.querySelector(`.header__back`);
 
-    nameInput.onkeypress = (event) => {
-      this.nameInputKeyHandler(event);
-    };
-    nameInput.oninput = (event) => {
-      this.nameInputInputHandler();
-    };
-
-    submitNameButton.onclick = (event) => {
+    const submitNameButtonClick = (event) => {
       event.preventDefault();
       this.submitNameButtonHandler();
     };
 
-    backButton.onclick = (event) => {
+    const backButtonClick = (event) => {
       event.preventDefault();
       this.backButtonHandler();
     };
+
+    nameInput.addEventListener(`keypress`, this.nameInputKeypressHandler);
+    nameInput.addEventListener(`input`, this.nameInputInputHandler);
+    submitNameButton.addEventListener(`click`, submitNameButtonClick);
+    backButton.addEventListener(`click`, backButtonClick);
   }
 
-  nameInputKeyHandler(event) {}
-  nameInputInputHandler() {}
+  nameInputKeypressHandler(event) {}
+  nameInputInputHandler(event) {}
   submitNameButtonHandler() {}
   backButtonHandler() {}
 }

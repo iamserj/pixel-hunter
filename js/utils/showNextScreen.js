@@ -2,7 +2,7 @@
  * Created by @iamserj on 01.06.2017.
  */
 
-import footerBlock from './moduleFooter';
+import footerBlock from '../screens/blockFooter';
 
 const mainScreen = document.querySelector(`main.central`);
 
@@ -11,7 +11,7 @@ export const appendScreenElements = (...elements) => {
   elements.forEach((item) => {
     mainScreen.appendChild(item);
   });
-  mainScreen.appendChild(footerBlock);
+  mainScreen.appendChild(footerBlock());
 };
 
 export const updateHeader = (headerElement = ``) => {
@@ -22,7 +22,7 @@ export const updateHeader = (headerElement = ``) => {
 const showNextScreen = (screen) => {
   mainScreen.innerHTML = ``;
   mainScreen.appendChild(screen);
-  mainScreen.appendChild(footerBlock);
+  mainScreen.appendChild(footerBlock());
 };
 
 export default showNextScreen;
