@@ -1,18 +1,16 @@
 /**
- * Created by soniko on 14.06.2017.
+ * Created by @iamserj on 14.06.2017.
  */
 
-import game1Screen from './screenGame1';
-import game2Screen from './screenGame2';
-import game3Screen from './screenGame3';
-import statsScreen from './screenStats';
-import {headerWithState, startTimer, stopTimer} from './gameHeader';
-import showNextScreen, {appendScreenElements} from './showNextScreen';
-import {levelTypes, answers, gameType, headerData, statsData, currentLevel, getImages, MAX_LEVELS_AMOUNT} from './data';
-import {statsWithState} from './gameStats';
+import {game1Screen, game2Screen, game3Screen} from './screens/allGames';
+import statsScreen from './screens/stats';
+import headerBlock, {startTimer, stopTimer, renderHeader} from './screens/blockHeader';
+import showNextScreen, {appendScreenElements} from './utils/showNextScreen';
+import {levelTypes, answers, GameType, headerData, statsData, currentLevel, getImages, MAX_LEVELS_AMOUNT} from './data';
+import statsBlock from './screens/blockStats';
 
 
-let headerElement;
+const headerElement = headerBlock();
 let gameElement;
 let statsElement;
 
@@ -26,34 +24,34 @@ export const resetAndStartGame = () => {
 };
 
 export const showNextGame = () => {
+  stopTimer();
   if (currentLevel.level === MAX_LEVELS_AMOUNT || headerData.lives === 0) {
-    stopTimer();
-    showNextScreen(statsScreen);
+    showNextScreen(statsScreen());
     return;
   }
 
   currentLevel.up();
 
   headerData.resetTime();
-  headerElement = headerWithState(headerData);
 
   switch (levelTypes.levelsArray[currentLevel.level - 1]) {
-    case gameType.ONE_IMAGE:
+    case GameType.ONE_IMAGE:
       gameElement = game1Screen(getImages(1));
       break;
-    case gameType.TWO_IMAGE:
+    case GameType.TWO_IMAGE:
       gameElement = game2Screen(getImages(2));
       break;
-    case gameType.THREE_IMAGE:
+    case GameType.THREE_IMAGE:
       gameElement = game3Screen(getImages(3));
       break;
     default:
       // default action
   }
 
-  statsElement = statsWithState(answers.data);    // set initial stats state
+  statsElement = statsBlock();
 
   appendScreenElements(headerElement, gameElement, statsElement);
+  renderHeader();
 
   startTimer();
 };

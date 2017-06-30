@@ -1,12 +1,12 @@
 /**
- * Created by soniko on 30.05.2017.
+ * Created by @iamserj on 30.05.2017.
  */
 
-import greetingScreen from './screenGreeting';
-import createElement from './createDOMElement';
-import showNextScreen from './showNextScreen';
+import AbstractView from '../view';
+import {allStats, headerData} from '../data';
 
-const statsMarkup = `\
+// TODO: clean screen, fill dynamically
+const statsMarkup = (stats, mainResult) => `\
 <header class="header">
   <div class="header__back">
     <span class="back">
@@ -16,7 +16,7 @@ const statsMarkup = `\
   </div>
 </header>
 <div class="result">
-  <h1>Победа!</h1>
+  <h1>${mainResult.result}</h1>
   <table class="result__table">
     <tr>
       <td class="result__number">1.</td>
@@ -39,17 +39,17 @@ const statsMarkup = `\
     </tr>
     <tr>
       <td></td>
-      <td class="result__extra">Бонус за скорость:</td>
-      <td class="result__extra">1&nbsp;<span class="stats__result stats__result--fast"></span></td>
-      <td class="result__points">×&nbsp;50</td>
-      <td class="result__total">50</td>
-    </tr>
-    <tr>
-      <td></td>
       <td class="result__extra">Бонус за жизни:</td>
       <td class="result__extra">2&nbsp;<span class="stats__result stats__result--heart"></span></td>
       <td class="result__points">×&nbsp;50</td>
       <td class="result__total">100</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="result__extra">Бонус за скорость:</td>
+      <td class="result__extra">1&nbsp;<span class="stats__result stats__result--fast"></span></td>
+      <td class="result__points">×&nbsp;50</td>
+      <td class="result__total">50</td>
     </tr>
     <tr>
       <td></td>
@@ -116,14 +116,21 @@ const statsMarkup = `\
   </table>
 </div>`;
 
-// TODO: clean screen, fill dynamically
-const statsScreen = createElement(statsMarkup);
-const backButton = statsScreen.querySelector(`.header__back`);
+export default class StatsScreenView extends AbstractView {
+  get template() {
+    return statsMarkup(allStats, headerData);
+  }
 
-const backButtonHandler = (event) => {
-  event.preventDefault();
-  showNextScreen(greetingScreen);
-};
-backButton.addEventListener(`click`, backButtonHandler);
+  bind() {
+    const backButton = this.element.querySelector(`.header__back`);
 
-export default statsScreen;
+    const backButtonClick = (event) => {
+      event.preventDefault();
+      this.backButtonHandler();
+    };
+
+    backButton.addEventListener(`click`, backButtonClick);
+  }
+
+  backButtonHandler() {}
+}

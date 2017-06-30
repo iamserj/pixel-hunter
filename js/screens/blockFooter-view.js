@@ -1,8 +1,8 @@
 /**
- * Created by soniko on 08.06.2017.
+ * Created by @iamserj on 08.06.2017.
  */
 
-import createElement from './createDOMElement';
+import AbstractView from '../view';
 
 const footerMarkup = `\
 <footer class="footer">
@@ -16,6 +16,8 @@ const footerMarkup = `\
   </div>
 </footer>`;
 
-const footerBlock = createElement(footerMarkup);
-
-export default footerBlock;
+export default class FooterBlockView extends AbstractView {
+  get template() {
+    return footerMarkup;
+  }
+}

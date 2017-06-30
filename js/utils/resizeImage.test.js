@@ -47,7 +47,6 @@ const createTestForFrame = (frame) => {
 
 createTestForFrame({width: 256, height: 256});
 createTestForFrame({width: 256, height: 128});
-
 createTestForFrame({width: 468, height: 458});
 createTestForFrame({width: 705, height: 455});
 createTestForFrame({width: 304, height: 455});

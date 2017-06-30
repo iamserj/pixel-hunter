@@ -1,10 +1,8 @@
 /**
- * Created by soniko on 30.05.2017.
+ * Created by @iamserj on 30.05.2017.
  */
 
-import rulesScreen from './screenRules';
-import createElement from './createDOMElement';
-import showNextScreen from './showNextScreen';
+import AbstractView from '../view';
 
 const greetingMarkup = `\
 <div class="greeting central--blur">
@@ -21,13 +19,22 @@ const greetingMarkup = `\
   <div class="greeting__continue"><span><img src="img/arrow_right.svg" width="64" height="64" alt="Next"></span></div>
 </div>`;
 
-const greetingScreen = createElement(greetingMarkup);
-const leftButton = greetingScreen.querySelector(`.greeting__continue`);
+export default class GreetingScreenView extends AbstractView {
 
-const leftButtonHandler = (event) => {
-  event.preventDefault();
-  showNextScreen(rulesScreen);
-};
-leftButton.addEventListener(`click`, leftButtonHandler);
+  get template() {
+    return greetingMarkup;
+  }
 
-export default greetingScreen;
+  bind() {
+    const nextButton = this.element.querySelector(`.greeting__continue`);
+
+    const nextButtonClick = (event) => {
+      event.preventDefault();
+      this.nextButtonHandler();
+    };
+
+    nextButton.addEventListener(`click`, nextButtonClick);
+  }
+
+  nextButtonHandler() {}
+}

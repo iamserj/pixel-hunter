@@ -1,8 +1,8 @@
 /**
- * Created by soniko on 26.05.2017.
+ * Created by @iamserj on 26.05.2017.
  */
 
-import introScreen from './screenIntro';
-import showNextScreen from './showNextScreen';
+import introScreen from './screens/intro';
+import showNextScreen from './utils/showNextScreen';
 
-showNextScreen(introScreen);
+showNextScreen(introScreen());
