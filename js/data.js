@@ -77,7 +77,7 @@ export const headerData = {
   _headerLives: 0,
   _headerResult: ``,
   resetTime() {
-    this._headerTime = 300;
+    this._headerTime = 30;
   },
   resetLives() {
     this._headerLives = 3;
