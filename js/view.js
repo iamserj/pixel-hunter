@@ -26,7 +26,6 @@ export default class AbstractView {
     return this._element;
   }
 
-  // createDOMElement.js analogue
   static createElement(templateString) {
     const newDiv = document.createElement(`div`);
     newDiv.innerHTML = templateString;

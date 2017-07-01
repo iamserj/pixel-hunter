@@ -3,10 +3,10 @@
  */
 
 import HeaderBlockView from './blockHeader-view';
-import showNextScreen, {updateHeader} from '../utils/showNextScreen';
-import greetingScreen from './greeting';
-import {headerData, answers} from '../data';
-import {showNextGame} from '../gameController';
+import renderScreen, {updateHeader} from '../../utils/showNextScreen';
+import greetingScreen from '../greeting';
+import {headerData, answers} from '../../data';
+import {showNextGame} from './game';
 
 
 const headerBlockView = new HeaderBlockView();
@@ -15,7 +15,7 @@ const headerBlock = () => {
 
   headerBlockView.backButtonHandler = () => {
     stopTimer();
-    showNextScreen(greetingScreen());
+    renderScreen(greetingScreen());
   };
 
   return headerBlockView.element;

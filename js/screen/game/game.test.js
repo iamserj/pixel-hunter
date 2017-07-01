@@ -3,11 +3,11 @@
  */
 
 import assert from 'assert';
-import {currentLevel, MAX_LEVELS_AMOUNT} from '../data';
-import {headerData} from '../data';
-import {GameType, levelTypes} from '../data';
-import {AnswerType, AnswerTiming, answers} from '../data';
-import {ScorePoints, score} from '../data';
+import {currentLevel, MAX_LEVELS_AMOUNT} from '../../data';
+import {headerData} from '../../data';
+import {GameType, levelTypes} from '../../data';
+import {AnswerType, AnswerTiming, answers} from '../../data';
+import {ScorePoints, score} from '../../data';
 
 
 describe(`Game`, () => {
@@ -56,7 +56,7 @@ describe(`Game`, () => {
 
   it(`levelTypes should present 1, 2 or 3`, () => {
     levelTypes.reset();
-    levelTypes.levelsArray.forEach(function (element) {
+    levelTypes.levelsArray.forEach((element) => {
       assert.ok(element === GameType.ONE_IMAGE || element === GameType.TWO_IMAGE || element === GameType.THREE_IMAGE);
     });
   });

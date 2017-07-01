@@ -116,7 +116,11 @@ const statsMarkup = (stats, mainResult) => `\
   </table>
 </div>`;
 
-export default class StatsScreenView extends AbstractView {
+export default class ResultsScreenView extends AbstractView {
+  constructor() {
+    super();
+  }
+
   get template() {
     return statsMarkup(allStats, headerData);
   }

@@ -2,7 +2,8 @@
  * Created by @iamserj on 01.06.2017.
  */
 
-import footerBlock from '../screens/blockFooter';
+import footerBlock from '../screen/blockFooter';
+
 
 const mainScreen = document.querySelector(`main.central`);
 
@@ -19,10 +20,10 @@ export const updateHeader = (headerElement = ``) => {
   mainScreen.querySelector(`.header`).appendChild(headerElement);
 };
 
-const showNextScreen = (screen) => {
+const renderScreen = (screen) => {
   mainScreen.innerHTML = ``;
   mainScreen.appendChild(screen);
   mainScreen.appendChild(footerBlock());
 };
 
-export default showNextScreen;
+export default renderScreen;

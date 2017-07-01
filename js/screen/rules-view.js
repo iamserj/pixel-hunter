@@ -35,6 +35,10 @@ let submitNameButton;
 let backButton;
 
 export default class RulesScreenView extends AbstractView {
+  constructor() {
+    super();
+  }
+
   get template() {
     return rulesMarkup;
   }

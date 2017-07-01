@@ -2,9 +2,9 @@
  * Created by @iamserj on 30.05.2017.
  */
 
-import AbstractView from '../view';
-import resizeImage from '../utils/resizeImage';
-import {getImages, taskType} from '../data';
+import AbstractView from '../../view';
+import resizeImage from '../../utils/resizeImage';
+import {getImages, taskType} from '../../data';
 
 
 const game1Markup = (image) => `\
@@ -73,7 +73,7 @@ const game3Markup = (image, taskText) => `\
 
 // TODO: merge with ../utils/resizeImage
 const imageOnload = (imageElement) => {
-  const loadInterval = setInterval(function () {
+  const loadInterval = setInterval(() => {
     if (imageElement.naturalWidth) {
       clearInterval(loadInterval);
       const container = {width: imageElement.width, height: imageElement.height};
@@ -91,6 +91,9 @@ const imageOnload = (imageElement) => {
 let answer1ImageType;
 
 export class Game1View extends AbstractView {
+  constructor() {
+    super();
+  }
 
   get template() {
     const imageData = getImages(1);
@@ -119,6 +122,10 @@ let answer2Image1Type;
 let answer2Image2Type;
 
 export class Game2View extends AbstractView {
+  constructor() {
+    super();
+  }
+
   get template() {
     const imageData = getImages(2);
     answer2Image1Type = imageData[0][1];
@@ -156,6 +163,10 @@ let answer3ImageType;
 let answer3ImageData;
 
 export class Game3View extends AbstractView {
+  constructor() {
+    super();
+  }
+
   get template() {
     answer3ImageData = getImages(3);
     answer3ImageType = taskType.task;
