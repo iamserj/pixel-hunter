@@ -14,4 +14,4 @@ export default class ResultsScreen {
     this.view.backButtonHandler = () => App.showGreeting();
     renderScreen(this.view.element);
   }
-};
+}

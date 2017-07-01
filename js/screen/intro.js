@@ -15,4 +15,4 @@ export default class IntroScreen {
     this.view.asteriskHandler = () => App.showGreeting();
     renderScreen(this.view.element);
   }
-};
+}

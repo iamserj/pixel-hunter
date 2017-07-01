@@ -15,4 +15,4 @@ export default class GreetingScreen {
     this.view.nextButtonHandler = () => App.showRules();
     renderScreen(this.view.element);
   }
-};
+}

@@ -13,9 +13,9 @@ const statsMarkup = (state) => `\
 </div>`;
 
 export default class StatsBlockView extends AbstractView {
-  /*constructor() {
+  constructor() {
     super();
-  }*/
+  }
 
   get template() {
     return statsMarkup(answers.data);

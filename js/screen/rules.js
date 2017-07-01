@@ -39,4 +39,4 @@ export default class RulesScreen {
 
     renderScreen(this.view.element);
   }
-};
+}
