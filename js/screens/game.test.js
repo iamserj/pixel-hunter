@@ -3,11 +3,11 @@
  */
 
 import assert from 'assert';
-import {currentLevel, MAX_LEVELS_AMOUNT} from './data';
-import {headerData} from './data';
-import {GameType, levelTypes} from './data';
-import {AnswerType, AnswerTiming, answers} from './data';
-import {ScorePoints, score} from './data';
+import {currentLevel, MAX_LEVELS_AMOUNT} from '../data';
+import {headerData} from '../data';
+import {GameType, levelTypes} from '../data';
+import {AnswerType, AnswerTiming, answers} from '../data';
+import {ScorePoints, score} from '../data';
 
 
 describe(`Game`, () => {

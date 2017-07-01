@@ -2,10 +2,9 @@
  * Created by @iamserj on 30.05.2017.
  */
 
-import createElement from '../utils/createDOMElement';
-import {showNextGame} from '../game';
-import {ANSWER_VARIETY, answers, taskType} from '../data';
+import AbstractView from '../view';
 import resizeImage from '../utils/resizeImage';
+import {getImages, taskType} from '../data';
 
 
 const game1Markup = (image) => `\
@@ -72,6 +71,7 @@ const game3Markup = (image, taskText) => `\
 </div>`;
 
 
+// TODO: merge with ../utils/resizeImage
 const imageOnload = (imageElement) => {
   const loadInterval = setInterval(function () {
     if (imageElement.naturalWidth) {
@@ -87,101 +87,100 @@ const imageOnload = (imageElement) => {
   }, 10);
 };
 
-export const game1Screen = (image) => {
-  const game1Block = createElement(game1Markup(image));
-  const img = game1Block.querySelector(`#imageid`);
-  img.style.visibility = `hidden`;
-  img.onload = imageOnload(img);
 
-  const question1 = game1Block.querySelectorAll(`input[name="question1"]`);
+let answer1ImageType;
 
-  Array.from(question1).forEach((answer) => {
-    answer.addEventListener(`click`, function (event) {
-      const isCorrect = answers.check(event.target.value, image[1]);
-      answers.save(isCorrect);
-      showNextGame();
-    });
-  });
+export class Game1View extends AbstractView {
 
-  return game1Block;
-};
+  get template() {
+    const imageData = getImages(1);
+    answer1ImageType = imageData[1];
+    return game1Markup(imageData);
+  }
 
-export const game2Screen = (image) => {
-  let answer1 = ``;
-  let answer2 = ``;
-  let firstAnswered = false;
-  let secondAnswered = false;
+  bind() {
+    const img = this.element.querySelector(`#imageid`);
+    img.style.visibility = `hidden`;
+    img.onload = imageOnload(img);
 
-  const game2Block = createElement(game2Markup(image));
-  const img1 = game2Block.querySelector(`#imageid1`);
-  const img2 = game2Block.querySelector(`#imageid2`);
-  img1.style.visibility = `hidden`;
-  img2.style.visibility = `hidden`;
-  img1.onload = imageOnload(img1);
-  img2.onload = imageOnload(img2);
+    const answerClick = (event) => {
+      this.answerHandler(event, answer1ImageType);
+    };
 
-  const question1 = game2Block.querySelectorAll(`input[name="question1"]`);
-  const question2 = game2Block.querySelectorAll(`input[name="question2"]`);
+    const question1 = this.element.querySelectorAll(`input[name="question1"]`);
+    Array.from(question1).forEach((answer) => answer.addEventListener(`click`, answerClick));
+  }
 
-  Array.from(question1).forEach((answer) => {
-    answer.addEventListener(`click`, function (event) {
-      if (firstAnswered) {
-        event.preventDefault();
-        return;
-      }
-      firstAnswered = true;
-      answer1 = answer.value;
-      checkAnotherAnswer();
-    });
-  });
+  answerHandler(event, answerType) {}
+}
 
-  Array.from(question2).forEach((answer) => {
-    answer.addEventListener(`click`, function (event) {
-      if (secondAnswered) {
-        event.preventDefault();
-        return;
-      }
-      secondAnswered = true;
-      answer2 = answer.value;
-      checkAnotherAnswer();
-    });
-  });
 
-  const checkAnotherAnswer = () => {
-    if (answer1 !== `` && answer2 !== ``) {
-      const isCorrectFirst = answers.check(answer1, image[0][1]);
-      const isCorrectSecond = answers.check(answer2, image[1][1]);
-      answers.save(isCorrectFirst, isCorrectSecond);
-      showNextGame();
-      answer1 = answer2 = ``;
-    }
-  };
+let answer2Image1Type;
+let answer2Image2Type;
 
-  return game2Block;
-};
+export class Game2View extends AbstractView {
+  get template() {
+    const imageData = getImages(2);
+    answer2Image1Type = imageData[0][1];
+    answer2Image2Type = imageData[1][1];
+    return game2Markup(imageData);
+  }
 
-export const game3Screen = (image) => {
-  const game3Block = createElement(game3Markup(image, taskType.taskText));
+  bind() {
+    const img1 = this.element.querySelector(`#imageid1`);
+    const img2 = this.element.querySelector(`#imageid2`);
+    img1.style.visibility = `hidden`;
+    img2.style.visibility = `hidden`;
+    img1.onload = imageOnload(img1);
+    img2.onload = imageOnload(img2);
 
-  const img1 = game3Block.querySelector(`#imageid1`);
-  const img2 = game3Block.querySelector(`#imageid2`);
-  const img3 = game3Block.querySelector(`#imageid3`);
-  img1.style.visibility = `hidden`;
-  img2.style.visibility = `hidden`;
-  img3.style.visibility = `hidden`;
-  img1.onload = imageOnload(img1);
-  img2.onload = imageOnload(img2);
-  img3.onload = imageOnload(img3);
+    const question1 = this.element.querySelectorAll(`input[name="question1"]`);
+    const question2 = this.element.querySelectorAll(`input[name="question2"]`);
 
-  const question1 = game3Block.querySelectorAll(`.game__option`);
+    const answer1Click = (event) => {
+      this.answer1Handler(event, answer2Image1Type);
+    };
+    const answer2Click = (event) => {
+      this.answer2Handler(event, answer2Image2Type);
+    };
 
-  Array.from(question1).forEach((answer) => {
-    answer.addEventListener(`click`, function (event) {
-      const selectedAnswer = image[event.target.id.slice(-1)][1];
-      answers.save(selectedAnswer === ANSWER_VARIETY[taskType.task]);
-      showNextGame();
-    });
-  });
+    Array.from(question1).forEach((answer) => answer.addEventListener(`click`, answer1Click));
+    Array.from(question2).forEach((answer) => answer.addEventListener(`click`, answer2Click));
+  }
+  answer1Handler(event, answerType) {}
+  answer2Handler(event, answerType) {}
+}
 
-  return game3Block;
-};
+
+let answer3ImageType;
+let answer3ImageData;
+
+export class Game3View extends AbstractView {
+  get template() {
+    answer3ImageData = getImages(3);
+    answer3ImageType = taskType.task;
+    return game3Markup(answer3ImageData, taskType.taskText);
+  }
+
+  bind() {
+    const img1 = this.element.querySelector(`#imageid1`);
+    const img2 = this.element.querySelector(`#imageid2`);
+    const img3 = this.element.querySelector(`#imageid3`);
+    img1.style.visibility = `hidden`;
+    img2.style.visibility = `hidden`;
+    img3.style.visibility = `hidden`;
+    img1.onload = imageOnload(img1);
+    img2.onload = imageOnload(img2);
+    img3.onload = imageOnload(img3);
+
+    const question1 = this.element.querySelectorAll(`.game__option`);
+
+    const answerClick = (event) => {
+      this.answerHandler(event, answer3ImageData, answer3ImageType);
+    };
+
+    Array.from(question1).forEach((answer) => answer.addEventListener(`click`, answerClick));
+  }
+
+  answerHandler(event, imageData, answerType) {}
+}
