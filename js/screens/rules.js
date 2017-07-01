@@ -4,7 +4,7 @@
 
 
 import {NAME_MIN_LENGTH, NAME_MAX_LENGTH, NAME_REGEXP, userData} from '../data';
-import {resetAndStartGame} from './game';
+import {resetAndStartGame} from '../gameController';
 import RulesScreenView from './rules-view';
 import greetingScreen from './greeting';
 import showNextScreen from '../utils/showNextScreen';

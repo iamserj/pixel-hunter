@@ -6,7 +6,7 @@ import HeaderBlockView from './blockHeader-view';
 import showNextScreen, {updateHeader} from '../utils/showNextScreen';
 import greetingScreen from './greeting';
 import {headerData, answers} from '../data';
-import {showNextGame} from './game';
+import {showNextGame} from '../gameController';
 
 
 const headerBlockView = new HeaderBlockView();
