@@ -30,6 +30,7 @@ export const ScorePoints = {
  * USERNAME
  */
 export const userData = {
+  _name: `Unknown User`,
   get name() {
     return this._name;
   },
@@ -100,6 +101,12 @@ export const headerData = {
 /**
  * ANSWERS, IN-GAME STATS
  */
+export const AnswerCode = {
+  1: `CORRECT`,
+  0: `WRONG`,
+  2: `FAST`,
+  3: `SLOW`
+};
 export const AnswerType = {
   UNKNOWN: `<li class="stats__result stats__result--unknown"></li>`,
   CORRECT: `<li class="stats__result stats__result--correct"></li>`,

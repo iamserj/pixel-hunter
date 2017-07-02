@@ -36,8 +36,9 @@ class Application {
   }
 
   changeController(route = ``) {
-    const Controller = this.routes[route];
-    new Controller().init();
+    const routeArray = route.split(`-`);
+    const Controller = this.routes[routeArray[0]];
+    new Controller().init(routeArray[1]);
   }
 
   init() {
