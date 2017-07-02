@@ -20,6 +20,9 @@ const greetingMarkup = `\
 </div>`;
 
 export default class GreetingScreenView extends AbstractView {
+  constructor() {
+    super();
+  }
 
   get template() {
     return greetingMarkup;

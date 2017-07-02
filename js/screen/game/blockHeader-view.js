@@ -2,8 +2,8 @@
  * Created by @iamserj on 12.06.2017.
  */
 
-import AbstractView from '../view';
-import {MAX_LIVES, headerData} from '../data';
+import AbstractView from '../../view';
+import {MAX_LIVES, headerData} from '../../data';
 
 const headerMarkup = (state) => `\
 <header class="header">
@@ -26,6 +26,10 @@ const headerMarkup = (state) => `\
 
 
 export default class HeaderBlockView extends AbstractView {
+  constructor() {
+    super();
+  }
+
   get template() {
     return headerMarkup(headerData);
   }

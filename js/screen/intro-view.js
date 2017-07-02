@@ -13,6 +13,9 @@ const introMarkup = `\
 </div>`;
 
 export default class IntroScreenView extends AbstractView {
+  constructor() {
+    super();
+  }
 
   get template() {
     return introMarkup;

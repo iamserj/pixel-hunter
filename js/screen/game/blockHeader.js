@@ -2,11 +2,11 @@
  * Created by @iamserj on 12.06.2017.
  */
 
+import App from '../../application';
 import HeaderBlockView from './blockHeader-view';
-import showNextScreen, {updateHeader} from '../utils/showNextScreen';
-import greetingScreen from './greeting';
-import {headerData, answers} from '../data';
-import {showNextGame} from '../game';
+import renderScreen, {updateHeader} from '../../utils/showNextScreen';
+import greetingScreen from '../greeting';
+import {headerData, answers} from '../../data';
 
 
 const headerBlockView = new HeaderBlockView();
@@ -15,7 +15,7 @@ const headerBlock = () => {
 
   headerBlockView.backButtonHandler = () => {
     stopTimer();
-    showNextScreen(greetingScreen());
+    renderScreen(greetingScreen());
   };
 
   return headerBlockView.element;
@@ -36,7 +36,7 @@ const timerCount = () => {
   if (headerData.time === 0) {
     clearInterval(intervalId);
     answers.save(false);
-    showNextGame();
+    App.showNextGame();
   }
 };
 

@@ -17,6 +17,10 @@ const footerMarkup = `\
 </footer>`;
 
 export default class FooterBlockView extends AbstractView {
+  constructor() {
+    super();
+  }
+
   get template() {
     return footerMarkup;
   }
