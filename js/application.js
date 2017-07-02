@@ -5,8 +5,7 @@
 import IntroScreen from './screen/intro';
 import GreetingScreen from './screen/greeting';
 import RulesScreen from './screen/rules';
-// import GameScreen from './screen/game';
-import {resetAndStartGame, showNextGame} from './screen/game/game';
+import GameScreen from './screen/game/game';
 import ResultsScreen from './screen/results';
 
 
@@ -16,7 +15,7 @@ class Application {
     this._intro = new IntroScreen();
     this._greeting = new GreetingScreen();
     this._rules = new RulesScreen();
-    // this._game = new Game();
+    this._game = new GameScreen();
     this._results = new ResultsScreen();
   }
 
@@ -33,12 +32,12 @@ class Application {
   }
 
   startNewGame() {
-    resetAndStartGame();
-    showNextGame();
+    this._game.init();
+    this._game.showNextGame();
   }
 
   showNextGame() {
-    showNextGame();
+    this._game.showNextGame();
   }
 
   showResults() {

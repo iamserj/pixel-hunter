@@ -6,8 +6,9 @@ import App from '../../application';
 import {Game1View, Game2View, Game3View} from './game-view';
 import headerBlock, {startTimer, stopTimer, renderHeader} from './blockHeader';
 import statsBlock from './blockStats';
-import {ANSWER_VARIETY, answers, levelTypes, GameType, headerData, statsData, currentLevel, MAX_LEVELS_AMOUNT} from '../../data';
-import {appendScreenElements} from '../../utils/showNextScreen';
+import {ANSWER_VARIETY, MAX_LEVELS_AMOUNT, GameType} from '../../data';
+import {answers, levelTypes, headerData, allStats, currentLevel} from '../../data';
+import renderScreen from '../../utils/showNextScreen';
 
 
 const game1 = () => {
@@ -22,31 +23,24 @@ const game1 = () => {
 
 const game2 = () => {
   const game2BlockView = new Game2View();
-
   let answer1 = ``;
   let answer2 = ``;
-  let firstAnswered = false;
-  let secondAnswered = false;
   let firstImageType;
   let secondImageType;
-
   game2BlockView.answer1Handler = (event, answerType) => {
-    if (firstAnswered) {
+    if (answer1 !== ``) {
       event.preventDefault();
       return;
     }
-    // TODO: try use condition (answer1 !== ``)
-    firstAnswered = true;
     answer1 = event.target.value;
     firstImageType = answerType;
     checkAnotherAnswer();
   };
   game2BlockView.answer2Handler = (event, answerType) => {
-    if (secondAnswered) {
+    if (answer2 !== ``) {
       event.preventDefault();
       return;
     }
-    secondAnswered = true;
     answer2 = event.target.value;
     secondImageType = answerType;
     checkAnotherAnswer();
@@ -59,11 +53,8 @@ const game2 = () => {
       answers.save(isCorrectFirst, isCorrectSecond);
       App.showNextGame();
       answer1 = answer2 = ``;
-      firstAnswered = false;
-      secondAnswered = false;
     }
   };
-
   return game2BlockView.element;
 };
 
@@ -79,47 +70,45 @@ const game3 = () => {
 };
 
 
-const headerElement = headerBlock();
-let gameElement;
-let statsElement;
+export default class GameScreen {
+  constructor() {}
 
-export const resetAndStartGame = () => {
-  currentLevel.reset();
-  headerData.resetLives();
-  answers.reset();
-  levelTypes.reset();
-  statsData.reset();
-};
-
-export const showNextGame = () => {
-  stopTimer();
-  if (currentLevel.level === MAX_LEVELS_AMOUNT || headerData.lives === 0) {
-    App.showResults();
-    return;
+  init() {
+    this._headerElement = headerBlock();
+    currentLevel.reset();
+    headerData.resetLives();
+    answers.reset();
+    levelTypes.reset();
   }
 
-  currentLevel.up();
+  showNextGame() {
+    stopTimer();
+    if (currentLevel.level === MAX_LEVELS_AMOUNT || headerData.lives === 0) {
+      allStats.stats = answers.data;
+      App.showResults();
+      return;
+    }
 
-  headerData.resetTime();
+    currentLevel.up();
+    headerData.resetTime();
 
-  switch (levelTypes.levelsArray[currentLevel.level - 1]) {
-    case GameType.ONE_IMAGE:
-      gameElement = game1();
-      break;
-    case GameType.TWO_IMAGE:
-      gameElement = game2();
-      break;
-    case GameType.THREE_IMAGE:
-      gameElement = game3();
-      break;
-    default:
-    // default action
+    switch (levelTypes.levelsArray[currentLevel.level - 1]) {
+      case GameType.ONE_IMAGE:
+        this._gameElement = game1();
+        break;
+      case GameType.TWO_IMAGE:
+        this._gameElement = game2();
+        break;
+      case GameType.THREE_IMAGE:
+        this._gameElement = game3();
+        break;
+      default:
+      // default action
+    }
+
+    this._statsElement = statsBlock();
+    renderScreen(this._headerElement, this._gameElement, this._statsElement);
+    renderHeader();
+    startTimer();
   }
-
-  statsElement = statsBlock();
-
-  appendScreenElements(headerElement, gameElement, statsElement);
-  renderHeader();
-
-  startTimer();
-};
+}

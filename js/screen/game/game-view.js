@@ -3,7 +3,7 @@
  */
 
 import AbstractView from '../../view';
-import resizeImage from '../../utils/resizeImage';
+import imageOnLoad from '../../utils/resizeImage';
 import {getImages, taskType} from '../../data';
 
 
@@ -71,23 +71,6 @@ const game3Markup = (image, taskText) => `\
 </div>`;
 
 
-// TODO: merge with ../utils/resizeImage
-const imageOnload = (imageElement) => {
-  const loadInterval = setInterval(() => {
-    if (imageElement.naturalWidth) {
-      clearInterval(loadInterval);
-      const container = {width: imageElement.width, height: imageElement.height};
-      const naturalFrame = {width: imageElement.naturalWidth, height: imageElement.naturalHeight};
-      const actualSize = resizeImage(container, naturalFrame);
-      imageElement.style.width = actualSize.width + `px`;
-      imageElement.style.height = actualSize.height + `px`;
-      imageElement.style.marginTop = (container.height - imageElement.height) / 2 + `px`;
-      imageElement.style.visibility = `visible`;
-    }
-  }, 10);
-};
-
-
 let answer1ImageType;
 
 export class Game1View extends AbstractView {
@@ -104,7 +87,7 @@ export class Game1View extends AbstractView {
   bind() {
     const img = this.element.querySelector(`#imageid`);
     img.style.visibility = `hidden`;
-    img.onload = imageOnload(img);
+    img.onload = imageOnLoad(img);
 
     const answerClick = (event) => {
       this.answerHandler(event, answer1ImageType);
@@ -138,8 +121,8 @@ export class Game2View extends AbstractView {
     const img2 = this.element.querySelector(`#imageid2`);
     img1.style.visibility = `hidden`;
     img2.style.visibility = `hidden`;
-    img1.onload = imageOnload(img1);
-    img2.onload = imageOnload(img2);
+    img1.onload = imageOnLoad(img1);
+    img2.onload = imageOnLoad(img2);
 
     const question1 = this.element.querySelectorAll(`input[name="question1"]`);
     const question2 = this.element.querySelectorAll(`input[name="question2"]`);
@@ -180,9 +163,9 @@ export class Game3View extends AbstractView {
     img1.style.visibility = `hidden`;
     img2.style.visibility = `hidden`;
     img3.style.visibility = `hidden`;
-    img1.onload = imageOnload(img1);
-    img2.onload = imageOnload(img2);
-    img3.onload = imageOnload(img3);
+    img1.onload = imageOnLoad(img1);
+    img2.onload = imageOnLoad(img2);
+    img3.onload = imageOnLoad(img3);
 
     const question1 = this.element.querySelectorAll(`.game__option`);
 

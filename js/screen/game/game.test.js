@@ -7,7 +7,6 @@ import {currentLevel, MAX_LEVELS_AMOUNT} from '../../data';
 import {headerData} from '../../data';
 import {GameType, levelTypes} from '../../data';
 import {AnswerType, AnswerTiming, answers} from '../../data';
-import {ScorePoints, score} from '../../data';
 
 
 describe(`Game`, () => {
@@ -120,48 +119,6 @@ describe(`Game`, () => {
       const initialLivesMinusOne = headerData.lives - 1;
       answers.save(false);
       assert.strictEqual(headerData.lives, initialLivesMinusOne);
-    });
-
-  });
-
-});
-
-describe(`STATISTICS`, () => {
-
-  describe(`Score points`, () => {
-
-    it(`Correct answer adds 100 points`, () => {
-      score.reset();
-      const pointsPlus = score.points + ScorePoints.CORRECT;
-      score.add(ScorePoints.CORRECT);
-      assert.equal(pointsPlus, score.points);
-    });
-
-    it(`Fast answer adds 150 points`, () => {
-      score.reset();
-      const pointsPlus = score.points + ScorePoints.FAST;
-      score.add(ScorePoints.FAST);
-      assert.equal(pointsPlus, score.points);
-    });
-
-    it(`Slow answer adds 50 points`, () => {
-      score.reset();
-      const pointsPlus = score.points + ScorePoints.SLOW;
-      score.add(ScorePoints.SLOW);
-      assert.equal(pointsPlus, score.points);
-    });
-
-    it(`Saved lives adds 50 points`, () => {
-      score.reset();
-      headerData.resetLives();
-
-      let pointsCheck = score.points;
-
-      for (let i = headerData.lives; i > 0; i--) {
-        pointsCheck += ScorePoints.SAVEDLIVE;
-        score.add(ScorePoints.SAVEDLIVE);
-      }
-      assert.equal(pointsCheck, score.points);
     });
 
   });

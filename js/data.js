@@ -6,7 +6,7 @@ export const MAX_LIVES = 3;
 export const MAX_LEVELS_AMOUNT = 10;
 export const ANSWER_VARIETY = [`paint`, `photo`];
 export const NAME_MIN_LENGTH = 2;
-export const NAME_MAX_LENGTH = 20;
+export const NAME_MAX_LENGTH = 14;
 export const NAME_REGEXP = new RegExp(`[A-Za-zА-Яа-яЁё0-9_.-]+`);
 
 export const AnswerTiming = {
@@ -15,29 +15,14 @@ export const AnswerTiming = {
 };
 export const Result = {
   WIN: `Победа!`,
-  LOSE: `Не победа!`
+  LOSE: `Не победа`
 };
 export const ScorePoints = {
-  UNKNOWN: 0,
   CORRECT: 100,
-  WRONG: 0,
-  FAST: 150,
-  SLOW: 50,
-  NOMISTAKES: 50,
-  SAVEDLIVE: 50
-};
-
-export const score = {
-  _currentScore: 0,
-  reset() {
-    this._currentScore = 0;
-  },
-  add(points) {
-    this._currentScore += points;
-  },
-  get points() {
-    return this._currentScore;
-  }
+  FAST: 50,
+  SLOW: -50,
+  LIFE: 50,
+  FAIL: `FAIL`
 };
 
 
@@ -104,7 +89,7 @@ export const headerData = {
 };
 
 /**
- * ANSWERS
+ * ANSWERS, IN-GAME STATS
  */
 export const AnswerType = {
   UNKNOWN: `<li class="stats__result stats__result--unknown"></li>`,
@@ -147,6 +132,36 @@ export const answers = {
 
 
 /**
+ * LAST SCREEN STATS
+ */
+export const allStats = {
+  _stats: {
+    'Леонид Аркадич': {
+      life: 3,
+      answers: [AnswerType.FAST, AnswerType.SLOW, AnswerType.CORRECT, AnswerType.SLOW, AnswerType.FAST, AnswerType.SLOW, AnswerType.CORRECT, AnswerType.CORRECT, AnswerType.FAST, AnswerType.SLOW]
+    },
+    'Семён Семёныч': {
+      life: 1,
+      answers: [AnswerType.CORRECT, AnswerType.CORRECT, AnswerType.CORRECT, AnswerType.CORRECT, AnswerType.SLOW, AnswerType.SLOW, AnswerType.WRONG, AnswerType.WRONG, AnswerType.CORRECT, AnswerType.CORRECT]
+    },
+    '12345678901234': {
+      life: 0,
+      answers: [AnswerType.CORRECT, AnswerType.CORRECT, AnswerType.FAST, AnswerType.WRONG, AnswerType.WRONG, AnswerType.WRONG, AnswerType.UNKNOWN, AnswerType.UNKNOWN, AnswerType.UNKNOWN, AnswerType.UNKNOWN]
+    }
+  },
+  get stats() {
+    return this._stats;
+  },
+  set stats(finalAnswers) {
+    this._stats[userData.name] = {
+      life: headerData.lives,
+      answers: finalAnswers
+    };
+  }
+};
+
+
+/**
  * GAME TYPE
  */
 export const GameType = Object.freeze({
@@ -166,46 +181,9 @@ export const levelTypes = {
   }
 };
 
-
-/**
- * GAME STATS
- */
-export const statsData = {
-  _stats: [],
-  get stats() {
-    return this._stats;
-  },
-  set stats(answer) {
-    this._stats = answer;
-  },
-  reset() {
-    this._stats = (new Array(MAX_LEVELS_AMOUNT)).fill(AnswerType.UNKNOWN);
-  }
-};
-
-
-/**
- * LAST SCREEN STATS
- */
-export const allStats = {
-  _stats: {
-    name1: [],
-    name2: [],
-    name3: []
-  },
-  get stats() {
-    return this._stats;
-  },
-  set stats(finalAnswers) {
-    this._stats[userData.name] = finalAnswers;
-  }
-};
-
-
 /**
  * IMAGES
  */
-// TODO: add normal photos/images
 const images = {
   paintings: [
     // People

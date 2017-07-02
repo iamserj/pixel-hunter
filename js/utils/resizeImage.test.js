@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-import resizeImage from './resizeImage';
+import {resizeImage} from './resizeImage';
 
 const createTestForFrame = (frame) => {
   const assertRatio = (given, expected) => {
