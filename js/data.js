@@ -41,6 +41,15 @@ export const userData = {
 /**
  * GAME MAIN DATA
  */
+export const game = {
+  _started: false,
+  get started() {
+    return this._started;
+  },
+  set started(value) {
+    this._started = value;
+  }
+};
 export const currentLevel = {
   _currentLevel: 0,
   reset() {
