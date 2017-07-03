@@ -8,6 +8,8 @@ import RulesScreen from './screen/rules';
 import GameScreen from './screen/game/game';
 import ResultsScreen from './screen/results';
 
+import {showPreloader} from './utils/showNextScreen';
+
 const ControllerID = {
   INTRO: ``,
   GREETING: `greeting`,
@@ -16,11 +18,18 @@ const ControllerID = {
   RESULTS: `results`
 };
 
+export const API = {
+  questions: `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/questions`//,
+  //statistic: `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/stats/:username:`
+};
+
 const getControllerIDFromHash = (hash) => hash.replace(`#`, ``);
 
 class Application {
 
   constructor() {
+
+    showPreloader();
 
     this.routes = {
       [ControllerID.INTRO]: IntroScreen,
@@ -33,6 +42,37 @@ class Application {
     window.addEventListener(`hashchange`, () => {
       this.changeController(getControllerIDFromHash(location.hash));
     });
+
+    fetch(API.questions)
+      .then((response) => response.json())
+      .then((result) => {
+        //this.setState(setQuestions(this.state, result));
+        console.log(result);
+
+        // preload images
+        const allImages = [];
+        result.forEach((question) => {
+          question.answers.forEach(({image}) => {
+            allImages.push(image.url);
+          });
+        });
+
+        let loadedCounter = 0;
+        const images = [];
+        const preload = (imagesSrc) => {
+          for (let i = 0; i < imagesSrc.length; i++) {
+            images[i] = new Image();
+            images[i].onload = () => {
+              loadedCounter++;
+              if (loadedCounter === allImages.length) {
+                this.init();
+              }
+            };
+            images[i].src = imagesSrc[i];
+          }
+        };
+        preload(allImages);
+      });
   }
 
   changeController(route = ``) {
@@ -68,7 +108,7 @@ class Application {
 }
 
 const App = new Application();
-App.init();
+//App.init();
 
 export default App;
 

@@ -7,6 +7,9 @@ import footerBlock from '../screen/blockFooter';
 
 const mainScreen = document.querySelector(`main.central`);
 
+export const showPreloader = () => {
+  mainScreen.innerHTML = `<div class="loader"></div>`;
+};
 
 export const updateHeader = (headerElement = ``) => {
   mainScreen.querySelector(`.header`).innerHTML = ``;
