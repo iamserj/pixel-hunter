@@ -30,7 +30,7 @@ export default class RulesScreen {
 
     this.view.submitNameButtonHandler = () => {
       userData.name = this.view.nameInputElement.value;
-      App.startNewGame();
+      App.showGame();
       this.view.nameInputElement.value = ``;
       this.view.submitNameButtonElement.disabled = true;
     };

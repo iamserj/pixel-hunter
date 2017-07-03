@@ -4,9 +4,8 @@
 
 import App from '../../application';
 import HeaderBlockView from './blockHeader-view';
-import renderScreen, {updateHeader} from '../../utils/showNextScreen';
-import greetingScreen from '../greeting';
-import {headerData, answers} from '../../data';
+import {updateHeader} from '../../utils/showNextScreen';
+import {game, headerData, answers} from '../../data';
 
 
 const headerBlockView = new HeaderBlockView();
@@ -15,7 +14,8 @@ const headerBlock = () => {
 
   headerBlockView.backButtonHandler = () => {
     stopTimer();
-    renderScreen(greetingScreen());
+    game.started = false;
+    App.showGreeting();
   };
 
   return headerBlockView.element;
@@ -36,7 +36,7 @@ const timerCount = () => {
   if (headerData.time === 0) {
     clearInterval(intervalId);
     answers.save(false);
-    App.showNextGame();
+    App.showGame();
   }
 };
 

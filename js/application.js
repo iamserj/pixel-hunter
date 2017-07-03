@@ -8,45 +8,67 @@ import RulesScreen from './screen/rules';
 import GameScreen from './screen/game/game';
 import ResultsScreen from './screen/results';
 
+const ControllerID = {
+  INTRO: ``,
+  GREETING: `greeting`,
+  RULES: `rules`,
+  GAME: `game`,
+  RESULTS: `results`
+};
+
+const getControllerIDFromHash = (hash) => hash.replace(`#`, ``);
 
 class Application {
 
   constructor() {
-    this._intro = new IntroScreen();
-    this._greeting = new GreetingScreen();
-    this._rules = new RulesScreen();
-    this._game = new GameScreen();
-    this._results = new ResultsScreen();
+
+    this.routes = {
+      [ControllerID.INTRO]: IntroScreen,
+      [ControllerID.GREETING]: GreetingScreen,
+      [ControllerID.RULES]: RulesScreen,
+      [ControllerID.GAME]: GameScreen,
+      [ControllerID.RESULTS]: ResultsScreen
+    };
+
+    window.addEventListener(`hashchange`, () => {
+      this.changeController(getControllerIDFromHash(location.hash));
+    });
+  }
+
+  changeController(route = ``) {
+    const routeArray = route.split(`-`);
+    const Controller = this.routes[routeArray[0]];
+    new Controller().init(routeArray[1]);
+  }
+
+  init() {
+    this.changeController(getControllerIDFromHash(location.hash));
   }
 
   showIntro() {
-    this._intro.init();
+    location.hash = ControllerID.INTRO;
   }
 
   showGreeting() {
-    this._greeting.init();
+    location.hash = ControllerID.GREETING;
   }
 
   showRules() {
-    this._rules.init();
+    location.hash = ControllerID.RULES;
   }
 
-  startNewGame() {
-    this._game.init();
-    this._game.showNextGame();
-  }
-
-  showNextGame() {
-    this._game.showNextGame();
+  showGame() {
+    location.hash = ControllerID.GAME;
   }
 
   showResults() {
-    this._results.init();
+    location.hash = ControllerID.RESULTS;
   }
 
 }
 
 const App = new Application();
+App.init();
 
 export default App;
 

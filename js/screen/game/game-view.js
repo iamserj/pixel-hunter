@@ -4,7 +4,7 @@
 
 import AbstractView from '../../view';
 import imageOnLoad from '../../utils/resizeImage';
-import {getImages, taskType} from '../../data';
+import {ANSWER_VARIETY, getImages, taskType, answers} from '../../data';
 
 
 const game1Markup = (image) => `\
@@ -90,14 +90,16 @@ export class Game1View extends AbstractView {
     img.onload = imageOnLoad(img);
 
     const answerClick = (event) => {
-      this.answerHandler(event, answer1ImageType);
+      const isCorrect = answers.check(event.target.value, answer1ImageType);
+      answers.save(isCorrect);
+      this.answerHandler();
     };
 
     const question1 = this.element.querySelectorAll(`input[name="question1"]`);
     Array.from(question1).forEach((answer) => answer.addEventListener(`click`, answerClick));
   }
 
-  answerHandler(event, answerType) {}
+  answerHandler() {}
 }
 
 
@@ -124,21 +126,47 @@ export class Game2View extends AbstractView {
     img1.onload = imageOnLoad(img1);
     img2.onload = imageOnLoad(img2);
 
-    const question1 = this.element.querySelectorAll(`input[name="question1"]`);
-    const question2 = this.element.querySelectorAll(`input[name="question2"]`);
+    let answer1 = ``;
+    let answer2 = ``;
+    let firstImageType;
+    let secondImageType;
 
     const answer1Click = (event) => {
-      this.answer1Handler(event, answer2Image1Type);
-    };
-    const answer2Click = (event) => {
-      this.answer2Handler(event, answer2Image2Type);
+      if (answer1 !== ``) {
+        event.preventDefault();
+        return;
+      }
+      answer1 = event.target.value;
+      firstImageType = answer2Image1Type;
+      checkAnotherAnswer();
     };
 
+    const answer2Click = (event) => {
+      if (answer2 !== ``) {
+        event.preventDefault();
+        return;
+      }
+      answer2 = event.target.value;
+      secondImageType = answer2Image2Type;
+      checkAnotherAnswer();
+    };
+
+    const question1 = this.element.querySelectorAll(`input[name="question1"]`);
+    const question2 = this.element.querySelectorAll(`input[name="question2"]`);
     Array.from(question1).forEach((answer) => answer.addEventListener(`click`, answer1Click));
     Array.from(question2).forEach((answer) => answer.addEventListener(`click`, answer2Click));
+
+    const checkAnotherAnswer = () => {
+      if (answer1 !== `` && answer2 !== ``) {
+        const isCorrectFirst = answers.check(answer1, firstImageType);
+        const isCorrectSecond = answers.check(answer2, secondImageType);
+        answers.save(isCorrectFirst, isCorrectSecond);
+        this.answerHandler();
+        answer1 = answer2 = ``;
+      }
+    };
   }
-  answer1Handler(event, answerType) {}
-  answer2Handler(event, answerType) {}
+  answerHandler() {}
 }
 
 
@@ -170,11 +198,14 @@ export class Game3View extends AbstractView {
     const question1 = this.element.querySelectorAll(`.game__option`);
 
     const answerClick = (event) => {
-      this.answerHandler(event, answer3ImageData, answer3ImageType);
+      const selectedAnswer = answer3ImageData[event.target.id.slice(-1)][1];
+      const isCorrect = selectedAnswer === ANSWER_VARIETY[answer3ImageType];
+      answers.save(isCorrect);
+      this.answerHandler();
     };
 
     Array.from(question1).forEach((answer) => answer.addEventListener(`click`, answerClick));
   }
 
-  answerHandler(event, imageData, answerType) {}
+  answerHandler() {}
 }
