@@ -8,6 +8,7 @@ import RulesScreen from './screen/rules';
 import GameScreen from './screen/game/game';
 import ResultsScreen from './screen/results';
 
+import {ServerData, gameData, loadedImages} from './data';
 import {showPreloader} from './utils/showNextScreen';
 
 const ControllerID = {
@@ -16,11 +17,6 @@ const ControllerID = {
   RULES: `rules`,
   GAME: `game`,
   RESULTS: `results`
-};
-
-export const API = {
-  questions: `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/questions`//,
-  //statistic: `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/stats/:username:`
 };
 
 const getControllerIDFromHash = (hash) => hash.replace(`#`, ``);
@@ -43,11 +39,11 @@ class Application {
       this.changeController(getControllerIDFromHash(location.hash));
     });
 
-    fetch(API.questions)
+    fetch(ServerData.questions)
       .then((response) => response.json())
       .then((result) => {
-        //this.setState(setQuestions(this.state, result));
-        console.log(result);
+        // save game data
+        gameData.data = result;
 
         // preload images
         const allImages = [];
@@ -66,6 +62,7 @@ class Application {
               loadedCounter++;
               if (loadedCounter === allImages.length) {
                 this.init();
+                loadedImages.data = images;
               }
             };
             images[i].src = imagesSrc[i];
@@ -108,7 +105,6 @@ class Application {
 }
 
 const App = new Application();
-//App.init();
 
 export default App;
 

@@ -4,7 +4,7 @@
 
 import AbstractView from '../../view';
 import imageOnLoad from '../../utils/resizeImage';
-import {ANSWER_VARIETY, getImages, taskType, answers} from '../../data';
+import {ANSWER_VARIETY, currentLevel, answers, levelTypes} from '../../data';
 
 
 const game1Markup = (image) => `\
@@ -54,7 +54,7 @@ const game2Markup = (image) => `\
   </form>
 </div>`;
 
-const game3Markup = (image, taskText) => `\
+const game3Markup = (image, taskText = `Третий лишний`) => `\
 <div class="game">
   <p class="game__task">${taskText}</p>
   <form class="game__content game__content--triple">
@@ -79,9 +79,11 @@ export class Game1View extends AbstractView {
   }
 
   get template() {
-    const imageData = getImages(1);
-    answer1ImageType = imageData[1];
-    return game1Markup(imageData);
+    const currentAnswer = (levelTypes.answers[currentLevel.level - 1]);
+    currentAnswer.forEach((image) => {
+      answer1ImageType = [image.image.url, image.type];
+    });
+    return game1Markup(answer1ImageType);
   }
 
   bind() {
@@ -103,8 +105,7 @@ export class Game1View extends AbstractView {
 }
 
 
-let answer2Image1Type;
-let answer2Image2Type;
+let answer2ImageType = [];
 
 export class Game2View extends AbstractView {
   constructor() {
@@ -112,10 +113,11 @@ export class Game2View extends AbstractView {
   }
 
   get template() {
-    const imageData = getImages(2);
-    answer2Image1Type = imageData[0][1];
-    answer2Image2Type = imageData[1][1];
-    return game2Markup(imageData);
+    const currentAnswer = (levelTypes.answers[currentLevel.level - 1]);
+    currentAnswer.forEach((image, index) => {
+      answer2ImageType[index] = [image.image.url, image.type];
+    });
+    return game2Markup(answer2ImageType);
   }
 
   bind() {
@@ -137,7 +139,7 @@ export class Game2View extends AbstractView {
         return;
       }
       answer1 = event.target.value;
-      firstImageType = answer2Image1Type;
+      firstImageType = answer2ImageType[0][1];
       checkAnotherAnswer();
     };
 
@@ -147,7 +149,7 @@ export class Game2View extends AbstractView {
         return;
       }
       answer2 = event.target.value;
-      secondImageType = answer2Image2Type;
+      secondImageType = answer2ImageType[1][1];
       checkAnotherAnswer();
     };
 
@@ -170,8 +172,7 @@ export class Game2View extends AbstractView {
 }
 
 
-let answer3ImageType;
-let answer3ImageData;
+let answer3ImageType = [];
 
 export class Game3View extends AbstractView {
   constructor() {
@@ -179,9 +180,12 @@ export class Game3View extends AbstractView {
   }
 
   get template() {
-    answer3ImageData = getImages(3);
-    answer3ImageType = taskType.task;
-    return game3Markup(answer3ImageData, taskType.taskText);
+    const currentAnswer = (levelTypes.answers[currentLevel.level - 1]);
+
+    currentAnswer.forEach((image, index) => {
+      answer3ImageType[index] = [image.image.url, image.type];
+    });
+    return game3Markup(answer3ImageType, `Найди лишнего`);
   }
 
   bind() {
@@ -198,7 +202,7 @@ export class Game3View extends AbstractView {
     const question1 = this.element.querySelectorAll(`.game__option`);
 
     const answerClick = (event) => {
-      const selectedAnswer = answer3ImageData[event.target.id.slice(-1)][1];
+      const selectedAnswer = answer3ImageType[event.target.id.slice(-1)][1];
       const isCorrect = selectedAnswer === ANSWER_VARIETY[answer3ImageType];
       answers.save(isCorrect);
       this.answerHandler();

@@ -9,6 +9,11 @@ export const NAME_MIN_LENGTH = 2;
 export const NAME_MAX_LENGTH = 14;
 export const NAME_REGEXP = new RegExp(`[A-Za-zА-Яа-яЁё0-9_.-]+`);
 
+export const ServerData = {
+  questions: `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/questions`,
+  statistic: `https://intensive-ecmascript-server-btfgudlkpi.now.sh/pixel-hunter/stats/:username:`
+};
+
 export const AnswerTiming = {
   FAST: 20,
   SLOW: 10
@@ -26,14 +31,14 @@ export const ScorePoints = {
 };
 
 export const ServerQuestionType = {
-  TWO_OF_TWO: 'two-of-two',
-  TINDER_LIKE: 'tinder-like',
-  ONE_OF_THREE: 'one-of-three'
+  'two-of-two': 2,
+  'tinder-like': 1,
+  'one-of-three': 3
 };
 
 export const ServerAnswerType = {
-  PAINTING: 'painting',
-  PHOTO: 'photo'
+  PAINTING: `painting`,
+  PHOTO: `photo`
 };
 
 
@@ -53,6 +58,14 @@ export const userData = {
 /**
  * GAME MAIN DATA
  */
+export const gameData = {
+  get data() {
+    return this._data;
+  },
+  set data(newData) {
+    this._data = newData;
+  }
+};
 export const game = {
   _started: false,
   get started() {
@@ -199,19 +212,34 @@ export const GameType = Object.freeze({
 
 export const levelTypes = {
   _levels: [],
+  _questionTexts: [],
+  _answers: [],
+  // _currentAnswer: 0,
   get levelsArray() {
     return this._levels;
   },
+  get questionTexts() {
+    return this._questionTexts;
+  },
+  get answers() {
+    return this._answers;
+  },
   reset() {
-    const gameTypeLength = Object.keys(GameType).length;
-    this._levels = [...new Array(MAX_LEVELS_AMOUNT)].map(() => Math.floor(1 + Math.random() * gameTypeLength));
+    // const gameTypeLength = Object.keys(GameType).length;
+    // this._levels = [...new Array(MAX_LEVELS_AMOUNT)].map(() => Math.floor(1 + Math.random() * gameTypeLength));
+    gameData.data.forEach((question) => {
+      this._levels.push(ServerQuestionType[question.type]);
+      this._questionTexts.push(question.question);
+      this._answers.push(question.answers);
+    });
   }
 };
+
 
 /**
  * IMAGES
  */
-const images = {
+/* const images = {
   paintings: [
     // People
     `https://k42.kn3.net/CF42609C8.jpg`,
@@ -246,6 +274,16 @@ const images = {
     `http://i.imgur.com/DKR1HtB.jpg`,
     `http://i.imgur.com/DKR1HtB.jpg`
   ]
+}; */
+
+export const loadedImages = {
+  _data: [],
+  set data(array) {
+    this._data = array;
+  },
+  get data() {
+    return this._data;
+  }
 };
 
 export const taskType = {
@@ -265,22 +303,23 @@ export const taskType = {
   }
 };
 
-const getOneImage = (task) => {
+/* const getOneImage = (task) => {
   const imagesArrayKey = Object.keys(images)[task]; // get object key with taskType
   const randomImageNumber = Math.floor(Math.random() * (images[imagesArrayKey].length)); // get random array number
   return images[imagesArrayKey][randomImageNumber] + `?` + Math.round(Math.random() * 1e9); // return image
-};
+}; */
 
 
-const randomizeTask = () => Math.round(Math.random());
+// const randomizeTask = () => Math.round(Math.random());
 
 // TODO: add duplicates check
-export const getImages = (amount) => {
+/* export const getImages = (amount) => {
   let randomTask = randomizeTask();
   let firstImage;
   let secondImage;
   let thirdImage;
   let returnedValue = [];
+
   switch (amount) {
     case 1:
       returnedValue = [getOneImage(randomTask), ANSWER_VARIETY[randomTask]];
@@ -306,4 +345,4 @@ export const getImages = (amount) => {
       break;
   }
   return returnedValue;
-};
+}; */
