@@ -4,7 +4,7 @@
 
 import AbstractView from '../../view';
 import imageOnLoad from '../../utils/resizeImage';
-import {ANSWER_VARIETY, currentLevel, answers, levelTypes} from '../../data';
+import {ServerAnswerType, currentLevel, answers, levelTypes} from '../../data';
 
 
 const game1Markup = (image) => `\
@@ -54,7 +54,7 @@ const game2Markup = (image) => `\
   </form>
 </div>`;
 
-const game3Markup = (image, taskText = `Третий лишний`) => `\
+const game3Markup = (image, taskText) => `\
 <div class="game">
   <p class="game__task">${taskText}</p>
   <form class="game__content game__content--triple">
@@ -83,6 +83,7 @@ export class Game1View extends AbstractView {
     currentAnswer.forEach((image) => {
       answer1ImageType = [image.image.url, image.type];
     });
+    // console.log(answer1ImageType[1]);
     return game1Markup(answer1ImageType);
   }
 
@@ -92,7 +93,7 @@ export class Game1View extends AbstractView {
     img.onload = imageOnLoad(img);
 
     const answerClick = (event) => {
-      const isCorrect = answers.check(event.target.value, answer1ImageType);
+      const isCorrect = answers.check(event.target.value, ServerAnswerType[answer1ImageType[1]]);
       answers.save(isCorrect);
       this.answerHandler();
     };
@@ -117,6 +118,7 @@ export class Game2View extends AbstractView {
     currentAnswer.forEach((image, index) => {
       answer2ImageType[index] = [image.image.url, image.type];
     });
+    // console.log(answer2ImageType[0][1], answer2ImageType[1][1]);
     return game2Markup(answer2ImageType);
   }
 
@@ -139,7 +141,7 @@ export class Game2View extends AbstractView {
         return;
       }
       answer1 = event.target.value;
-      firstImageType = answer2ImageType[0][1];
+      firstImageType = ServerAnswerType[answer2ImageType[0][1]];
       checkAnotherAnswer();
     };
 
@@ -149,7 +151,7 @@ export class Game2View extends AbstractView {
         return;
       }
       answer2 = event.target.value;
-      secondImageType = answer2ImageType[1][1];
+      secondImageType = ServerAnswerType[answer2ImageType[1][1]];
       checkAnotherAnswer();
     };
 
@@ -173,7 +175,7 @@ export class Game2View extends AbstractView {
 
 
 let answer3ImageType = [];
-
+let currentText;
 export class Game3View extends AbstractView {
   constructor() {
     super();
@@ -181,11 +183,12 @@ export class Game3View extends AbstractView {
 
   get template() {
     const currentAnswer = (levelTypes.answers[currentLevel.level - 1]);
-
+    currentText = (levelTypes.questionTexts[currentLevel.level - 1]);
     currentAnswer.forEach((image, index) => {
       answer3ImageType[index] = [image.image.url, image.type];
     });
-    return game3Markup(answer3ImageType, `Найди лишнего`);
+    // console.log(answer3ImageType[0][1], answer3ImageType[1][1], answer3ImageType[2][1]);
+    return game3Markup(answer3ImageType, currentText);
   }
 
   bind() {
@@ -202,9 +205,16 @@ export class Game3View extends AbstractView {
     const question1 = this.element.querySelectorAll(`.game__option`);
 
     const answerClick = (event) => {
+
       const selectedAnswer = answer3ImageType[event.target.id.slice(-1)][1];
-      const isCorrect = selectedAnswer === ANSWER_VARIETY[answer3ImageType];
-      answers.save(isCorrect);
+
+      if (currentText.indexOf(`фото`) !== -1) {
+        answers.save(selectedAnswer === `photo`);
+      } else if (currentText.indexOf(`рисунок`) !== -1) {
+        answers.save(selectedAnswer === `painting`);
+      } else {
+        answers.save(false);
+      }
       this.answerHandler();
     };
 

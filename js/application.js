@@ -39,6 +39,10 @@ class Application {
       this.changeController(getControllerIDFromHash(location.hash));
     });
 
+    this.fetchFromServer();
+  }
+
+  fetchFromServer() {
     fetch(ServerData.questions)
       .then((response) => response.json())
       .then((result) => {
@@ -107,4 +111,3 @@ class Application {
 const App = new Application();
 
 export default App;
-

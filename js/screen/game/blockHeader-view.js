@@ -13,7 +13,7 @@ const headerMarkup = (state) => `\
       <img src="img/logo_small.png" width="101" height="44">
     </span>
   </div>
-  <h1 class="game__timer"> ${state.time} </h1>
+  <h1 class="game__timer ${(state.time <= 5) ? `blinking` : ``}"> ${state.time} </h1>
   <div class="game__lives">
     ${new Array(MAX_LIVES - state.lives)
       .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">`)

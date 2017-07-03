@@ -36,7 +36,7 @@ const timerCount = () => {
   if (headerData.time === 0) {
     clearInterval(intervalId);
     answers.save(false);
-    App.showGame();
+    headerBlockView.element.dispatchEvent(new Event(`renew`));
   }
 };
 

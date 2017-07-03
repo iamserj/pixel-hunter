@@ -20,7 +20,7 @@ export const AnswerTiming = {
 };
 export const Result = {
   WIN: `Победа!`,
-  LOSE: `Не победа`
+  LOSE: `Поражение`
 };
 export const ScorePoints = {
   CORRECT: 100,
@@ -37,8 +37,8 @@ export const ServerQuestionType = {
 };
 
 export const ServerAnswerType = {
-  PAINTING: `painting`,
-  PHOTO: `photo`
+  'painting': `paint`,
+  'photo': `photo`
 };
 
 

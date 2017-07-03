@@ -15,10 +15,11 @@ export default class GameScreen {
   constructor() {}
 
   init() {
-
     if (!game.started) {
       game.started = true;
       this._headerElement = headerBlock();
+      const goNew = (event) => this.init();
+      this._headerElement.addEventListener(`renew`, goNew);
       currentLevel.reset();
       headerData.resetLives();
       answers.reset();
