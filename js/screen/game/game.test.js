@@ -5,7 +5,7 @@
 import assert from 'assert';
 import {currentLevel, MAX_LEVELS_AMOUNT} from '../../data';
 import {headerData} from '../../data';
-import {GameType, levelTypes} from '../../data';
+// import {GameType, levelTypes} from '../../data';
 import {AnswerType, AnswerTiming, answers} from '../../data';
 
 
@@ -53,7 +53,7 @@ describe(`Game`, () => {
   // commented to disable eslint error: Too many nested callbacks (4). Maximum allowed is 3  max-nested-callbacks
   // describe(`Level type should be 1, 2, 3 and length must be less than 10`, () => {
 
-  it(`levelTypes should present 1, 2 or 3`, () => {
+  /* it(`levelTypes should present 1, 2 or 3`, () => {
     levelTypes.reset();
     levelTypes.levelsArray.forEach((element) => {
       assert.ok(element === GameType.ONE_IMAGE || element === GameType.TWO_IMAGE || element === GameType.THREE_IMAGE);
@@ -62,7 +62,7 @@ describe(`Game`, () => {
 
   it(`levelTypes should contain 10 elements`, () => {
     assert.strictEqual(MAX_LEVELS_AMOUNT, levelTypes.levelsArray.length);
-  });
+  }); */
 
   // });
 
